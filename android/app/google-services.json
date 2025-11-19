@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "339926289202",
+    "project_id": "trustdog-k1q3oq",
+    "storage_bucket": "trustdog-k1q3oq.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:339926289202:android:2d4856379c6fcf386ca52b",
+        "android_client_info": {
+          "package_name": "com.flutterflow.trustdog"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpB3vRCLA0jYaNuMttZhi-P6aJMrqYg8I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
