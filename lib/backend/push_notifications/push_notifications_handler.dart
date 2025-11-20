@@ -197,6 +197,8 @@ final parametersBuilderMap =
       ),
   'underReviewDogs': ParameterData.none(),
   'homePageCopyCopy': ParameterData.none(),
+  'homePageCopyCopyCopy': ParameterData.none(),
+  'homePageCopyCopy2': ParameterData.none(),
 };
 
 Map<String, dynamic> getInitialParameterData(Map<String, dynamic> data) {

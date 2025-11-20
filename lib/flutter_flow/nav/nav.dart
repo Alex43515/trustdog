@@ -354,6 +354,20 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => params.isEmpty
               ? NavBarPage(initialPage: 'homePageCopyCopy')
               : HomePageCopyCopyWidget(),
+        ),
+        FFRoute(
+          name: HomePageCopyCopyCopyWidget.routeName,
+          path: HomePageCopyCopyCopyWidget.routePath,
+          builder: (context, params) => params.isEmpty
+              ? NavBarPage(initialPage: 'homePageCopyCopyCopy')
+              : HomePageCopyCopyCopyWidget(),
+        ),
+        FFRoute(
+          name: HomePageCopyCopy2Widget.routeName,
+          path: HomePageCopyCopy2Widget.routePath,
+          builder: (context, params) => params.isEmpty
+              ? NavBarPage(initialPage: 'homePageCopyCopy2')
+              : HomePageCopyCopy2Widget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
       observers: [routeObserver],

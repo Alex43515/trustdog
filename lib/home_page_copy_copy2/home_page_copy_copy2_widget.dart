@@ -7,28 +7,29 @@ import '/pages/components/create_modal/create_modal_widget.dart';
 import '/flutter_flow/revenue_cat_util.dart' as revenue_cat;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'home_page_copy_copy_model.dart';
-export 'home_page_copy_copy_model.dart';
+import 'home_page_copy_copy2_model.dart';
+export 'home_page_copy_copy2_model.dart';
 
-class HomePageCopyCopyWidget extends StatefulWidget {
-  const HomePageCopyCopyWidget({super.key});
+class HomePageCopyCopy2Widget extends StatefulWidget {
+  const HomePageCopyCopy2Widget({super.key});
 
-  static String routeName = 'homePageCopyCopy';
-  static String routePath = '/homePageCopyCopy';
+  static String routeName = 'homePageCopyCopy2';
+  static String routePath = '/homePageCopyCopy2';
 
   @override
-  State<HomePageCopyCopyWidget> createState() => _HomePageCopyCopyWidgetState();
+  State<HomePageCopyCopy2Widget> createState() =>
+      _HomePageCopyCopy2WidgetState();
 }
 
-class _HomePageCopyCopyWidgetState extends State<HomePageCopyCopyWidget> {
-  late HomePageCopyCopyModel _model;
+class _HomePageCopyCopy2WidgetState extends State<HomePageCopyCopy2Widget> {
+  late HomePageCopyCopy2Model _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => HomePageCopyCopyModel());
+    _model = createModel(context, () => HomePageCopyCopy2Model());
   }
 
   @override
@@ -155,117 +156,10 @@ class _HomePageCopyCopyWidgetState extends State<HomePageCopyCopyWidget> {
                 ),
               ],
             ),
-            Align(
-              alignment: AlignmentDirectional(0.0, 0.0),
-              child: Container(
-                width: MediaQuery.sizeOf(context).width * 0.9,
-                height: 80.0,
-                decoration: BoxDecoration(
-                  color: FlutterFlowTheme.of(context).secondaryBackground,
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 4.0,
-                      color: Color(0x33000000),
-                      offset: Offset(
-                        0.0,
-                        2.0,
-                      ),
-                    )
-                  ],
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: Align(
-                  alignment: AlignmentDirectional(0.0, 0.0),
-                  child: Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 15.0, 0.0, 0.0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              10.0, 0.0, 0.0, 0.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              30.0, 0.0, 0.0, 0.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                revenue_cat.offerings!.current!
-                                    .getPackage('\$rc_lifetime')!
-                                    .storeProduct
-                                    .priceString,
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      font: GoogleFonts.urbanist(
-                                        fontWeight: FontWeight.bold,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .fontStyle,
-                                      ),
-                                      fontSize: 12.0,
-                                      letterSpacing: 0.0,
-                                      fontWeight: FontWeight.bold,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .fontStyle,
-                                    ),
-                              ),
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 10.0, 0.0, 0.0),
-                                child: Text(
-                                  revenue_cat.offerings!.current!
-                                      .getPackage('\$rc_lifetime')!
-                                      .storeProduct
-                                      .title,
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyMedium
-                                      .override(
-                                        font: GoogleFonts.urbanist(
-                                          fontWeight:
-                                              FlutterFlowTheme.of(context)
-                                                  .bodyMedium
-                                                  .fontWeight,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .bodyMedium
-                                                  .fontStyle,
-                                        ),
-                                        fontSize: 11.0,
-                                        letterSpacing: 0.0,
-                                        fontWeight: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .fontWeight,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .fontStyle,
-                                      ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
             FFButtonWidget(
               onPressed: () async {
                 _model.isPurchaseSuccessful =
-                    await revenue_cat.purchasePackage('\$rc_lifetime');
+                    await revenue_cat.purchasePackage('post_highlight_ID');
                 if (_model.isPurchaseSuccessful!) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
