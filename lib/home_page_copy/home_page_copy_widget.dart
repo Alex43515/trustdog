@@ -305,7 +305,10 @@ class _HomePageCopyWidgetState extends State<HomePageCopyWidget> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Photo of Dog with Owner or Breeding Facility',
+                                  revenue_cat.offerings!.current!
+                                      .getPackage('dog_verification_package')!
+                                      .storeProduct
+                                      .priceString,
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -367,8 +370,8 @@ class _HomePageCopyWidgetState extends State<HomePageCopyWidget> {
             ),
             FFButtonWidget(
               onPressed: () async {
-                _model.isPurchaseSuccessful = await revenue_cat.purchasePackage(
-                    revenue_cat.offerings!.current!.lifetime!.identifier);
+                _model.isPurchaseSuccessful = await revenue_cat
+                    .purchasePackage('dog_verification_package');
                 if (_model.isPurchaseSuccessful!) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
