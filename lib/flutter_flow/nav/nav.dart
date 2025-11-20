@@ -347,6 +347,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: UnderReviewDogsWidget.routeName,
           path: UnderReviewDogsWidget.routePath,
           builder: (context, params) => UnderReviewDogsWidget(),
+        ),
+        FFRoute(
+          name: HomePageCopyCopyWidget.routeName,
+          path: HomePageCopyCopyWidget.routePath,
+          builder: (context, params) => params.isEmpty
+              ? NavBarPage(initialPage: 'homePageCopyCopy')
+              : HomePageCopyCopyWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
       observers: [routeObserver],

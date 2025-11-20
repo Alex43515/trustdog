@@ -306,7 +306,7 @@ class _HomePageCopyWidgetState extends State<HomePageCopyWidget> {
                               children: [
                                 Text(
                                   revenue_cat.offerings!.current!
-                                      .getPackage('dog_verification_package')!
+                                      .getPackage('post_highlight_ID')!
                                       .storeProduct
                                       .priceString,
                                   style: FlutterFlowTheme.of(context)
@@ -370,8 +370,8 @@ class _HomePageCopyWidgetState extends State<HomePageCopyWidget> {
             ),
             FFButtonWidget(
               onPressed: () async {
-                _model.isPurchaseSuccessful = await revenue_cat
-                    .purchasePackage('dog_verification_package');
+                _model.isPurchaseSuccessful =
+                    await revenue_cat.purchasePackage('post_highlight_ID');
                 if (_model.isPurchaseSuccessful!) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(

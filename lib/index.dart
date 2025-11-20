@@ -46,3 +46,5 @@ export '/dog_verification/status_verification/status_verification_widget.dart'
     show StatusVerificationWidget;
 export '/dog_verification/under_review_dogs/under_review_dogs_widget.dart'
     show UnderReviewDogsWidget;
+export '/home_page_copy_copy/home_page_copy_copy_widget.dart'
+    show HomePageCopyCopyWidget;
