@@ -169,6 +169,8 @@ class _NavBarPageState extends State<NavBarPage> {
       'dashmobile': DashmobileWidget(),
       'homePageCopy': HomePageCopyWidget(),
       'homePageCopyCopy': HomePageCopyCopyWidget(),
+      'homePageCopyCopyCopy': HomePageCopyCopyCopyWidget(),
+      'homePageCopyCopy2': HomePageCopyCopy2Widget(),
     };
     final currentIndex = tabs.keys.toList().indexOf(_currentPageName);
 
@@ -237,6 +239,22 @@ class _NavBarPageState extends State<NavBarPage> {
               Icons.ten_mp,
             ),
             label: '',
+            tooltip: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home_outlined,
+              size: 24.0,
+            ),
+            label: 'Home',
+            tooltip: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home_outlined,
+              size: 24.0,
+            ),
+            label: 'Home',
             tooltip: '',
           ),
           BottomNavigationBarItem(

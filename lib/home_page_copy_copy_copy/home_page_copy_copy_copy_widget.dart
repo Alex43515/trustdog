@@ -7,28 +7,30 @@ import '/pages/components/create_modal/create_modal_widget.dart';
 import '/flutter_flow/revenue_cat_util.dart' as revenue_cat;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'home_page_copy_copy_model.dart';
-export 'home_page_copy_copy_model.dart';
+import 'home_page_copy_copy_copy_model.dart';
+export 'home_page_copy_copy_copy_model.dart';
 
-class HomePageCopyCopyWidget extends StatefulWidget {
-  const HomePageCopyCopyWidget({super.key});
+class HomePageCopyCopyCopyWidget extends StatefulWidget {
+  const HomePageCopyCopyCopyWidget({super.key});
 
-  static String routeName = 'homePageCopyCopy';
-  static String routePath = '/homePageCopyCopy';
+  static String routeName = 'homePageCopyCopyCopy';
+  static String routePath = '/homePageCopyCopyCopy';
 
   @override
-  State<HomePageCopyCopyWidget> createState() => _HomePageCopyCopyWidgetState();
+  State<HomePageCopyCopyCopyWidget> createState() =>
+      _HomePageCopyCopyCopyWidgetState();
 }
 
-class _HomePageCopyCopyWidgetState extends State<HomePageCopyCopyWidget> {
-  late HomePageCopyCopyModel _model;
+class _HomePageCopyCopyCopyWidgetState
+    extends State<HomePageCopyCopyCopyWidget> {
+  late HomePageCopyCopyCopyModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => HomePageCopyCopyModel());
+    _model = createModel(context, () => HomePageCopyCopyCopyModel());
   }
 
   @override
@@ -200,10 +202,7 @@ class _HomePageCopyCopyWidgetState extends State<HomePageCopyCopyWidget> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                revenue_cat.offerings!.current!
-                                    .getPackage('\$rc_lifetime')!
-                                    .storeProduct
-                                    .priceString,
+                                'test',
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
@@ -225,10 +224,7 @@ class _HomePageCopyCopyWidgetState extends State<HomePageCopyCopyWidget> {
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     0.0, 10.0, 0.0, 0.0),
                                 child: Text(
-                                  revenue_cat.offerings!.current!
-                                      .getPackage('\$rc_lifetime')!
-                                      .storeProduct
-                                      .title,
+                                  'Clear photo showing face & owner / facility',
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -264,8 +260,10 @@ class _HomePageCopyCopyWidgetState extends State<HomePageCopyCopyWidget> {
             ),
             FFButtonWidget(
               onPressed: () async {
-                _model.isPurchaseSuccessful =
-                    await revenue_cat.purchasePackage('\$rc_lifetime');
+                _model.isPurchaseSuccessful = await revenue_cat.purchasePackage(
+                    revenue_cat.offerings!.current!
+                        .getPackage('\$rc_lifetime')!
+                        .identifier);
                 if (_model.isPurchaseSuccessful!) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
