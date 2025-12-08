@@ -1,26 +1,27 @@
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/pages/components/report_post/report_post_widget.dart';
+import '/pages/components/report/report_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'post_options_post_model.dart';
-export 'post_options_post_model.dart';
+import 'post_options_post_copy_model.dart';
+export 'post_options_post_copy_model.dart';
 
-class PostOptionsPostWidget extends StatefulWidget {
-  const PostOptionsPostWidget({
+class PostOptionsPostCopyWidget extends StatefulWidget {
+  const PostOptionsPostCopyWidget({
     super.key,
     required this.post,
   });
 
-  final UserPostsRecord? post;
+  final DogsRecord? post;
 
   @override
-  State<PostOptionsPostWidget> createState() => _PostOptionsPostWidgetState();
+  State<PostOptionsPostCopyWidget> createState() =>
+      _PostOptionsPostCopyWidgetState();
 }
 
-class _PostOptionsPostWidgetState extends State<PostOptionsPostWidget> {
-  late PostOptionsPostModel _model;
+class _PostOptionsPostCopyWidgetState extends State<PostOptionsPostCopyWidget> {
+  late PostOptionsPostCopyModel _model;
 
   @override
   void setState(VoidCallback callback) {
@@ -31,7 +32,7 @@ class _PostOptionsPostWidgetState extends State<PostOptionsPostWidget> {
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => PostOptionsPostModel());
+    _model = createModel(context, () => PostOptionsPostCopyModel());
   }
 
   @override
@@ -75,7 +76,7 @@ class _PostOptionsPostWidgetState extends State<PostOptionsPostWidget> {
                     width: 40.0,
                     height: 4.0,
                     decoration: BoxDecoration(
-                      color: Color(0xFFDADADA),
+                      color: FlutterFlowTheme.of(context).accent1,
                       borderRadius: BorderRadius.circular(4.0),
                     ),
                   ),
@@ -96,7 +97,7 @@ class _PostOptionsPostWidgetState extends State<PostOptionsPostWidget> {
                         builder: (context) {
                           return Padding(
                             padding: MediaQuery.viewInsetsOf(context),
-                            child: ReportPostWidget(
+                            child: ReportWidget(
                               postRef: widget.post!.reference,
                             ),
                           );

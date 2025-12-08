@@ -166,11 +166,7 @@ class _NavBarPageState extends State<NavBarPage> {
       'createPost': CreatePostWidget(),
       'allChatsPage': AllChatsPageWidget(),
       'profilepage2': Profilepage2Widget(),
-      'dashmobile': DashmobileWidget(),
-      'homePageCopy': HomePageCopyWidget(),
-      'homePageCopyCopy': HomePageCopyCopyWidget(),
-      'homePageCopyCopyCopy': HomePageCopyCopyCopyWidget(),
-      'homePageCopyCopy2': HomePageCopyCopy2Widget(),
+      'homePage2': HomePage2Widget(),
     };
     final currentIndex = tabs.keys.toList().indexOf(_currentPageName);
 
@@ -232,37 +228,6 @@ class _NavBarPageState extends State<NavBarPage> {
               size: 24.0,
             ),
             label: 'Profile',
-            tooltip: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.ten_mp,
-            ),
-            label: '',
-            tooltip: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home_outlined,
-              size: 24.0,
-            ),
-            label: 'Home',
-            tooltip: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home_outlined,
-              size: 24.0,
-            ),
-            label: 'Home',
-            tooltip: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home_outlined,
-              size: 24.0,
-            ),
-            label: 'Home',
             tooltip: '',
           ),
           BottomNavigationBarItem(

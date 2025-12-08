@@ -928,6 +928,7 @@ class _Filter2WidgetState extends State<Filter2Widget>
                                     FFAppState().filterSex =
                                         _model.radioButtonValue!;
                                     FFAppState().update(() {});
+                                    safeSetState(() {});
                                     Navigator.pop(context);
 
                                     context.goNamed(HomePageWidget.routeName);

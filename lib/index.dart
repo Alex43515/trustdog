@@ -33,7 +33,6 @@ export '/pages/deg_details/deg_details_widget.dart' show DegDetailsWidget;
 export '/pages/profilepage2/profilepage2_widget.dart' show Profilepage2Widget;
 export '/test/test_widget.dart' show TestWidget;
 export '/dog_map/dog_map/dog_map_widget.dart' show DogMapWidget;
-export '/home_page_copy/home_page_copy_widget.dart' show HomePageCopyWidget;
 export '/pages/dog_profile_update/dog_profile_update_widget.dart'
     show DogProfileUpdateWidget;
 export '/dash_desktop/dash_desktop_widget.dart' show DashDesktopWidget;
@@ -46,9 +45,4 @@ export '/dog_verification/status_verification/status_verification_widget.dart'
     show StatusVerificationWidget;
 export '/dog_verification/under_review_dogs/under_review_dogs_widget.dart'
     show UnderReviewDogsWidget;
-export '/home_page_copy_copy/home_page_copy_copy_widget.dart'
-    show HomePageCopyCopyWidget;
-export '/home_page_copy_copy_copy/home_page_copy_copy_copy_widget.dart'
-    show HomePageCopyCopyCopyWidget;
-export '/home_page_copy_copy2/home_page_copy_copy2_widget.dart'
-    show HomePageCopyCopy2Widget;
+export '/home_page2/home_page2_widget.dart' show HomePage2Widget;

@@ -51,7 +51,7 @@ class _ReportPostWidgetState extends State<ReportPostWidget> {
       width: MediaQuery.sizeOf(context).width * 1.0,
       height: MediaQuery.sizeOf(context).height * 1.0,
       decoration: BoxDecoration(
-        color: FlutterFlowTheme.of(context).secondary,
+        color: FlutterFlowTheme.of(context).tertiary,
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(0.0),
           bottomRight: Radius.circular(0.0),
@@ -83,7 +83,7 @@ class _ReportPostWidgetState extends State<ReportPostWidget> {
                       },
                       child: Icon(
                         Icons.chevron_left,
-                        color: FlutterFlowTheme.of(context).tertiary,
+                        color: FlutterFlowTheme.of(context).alternate,
                         size: 25.0,
                       ),
                     ),

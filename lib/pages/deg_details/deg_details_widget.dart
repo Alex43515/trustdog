@@ -5,7 +5,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_video_player.dart';
 import '/pages/components/delete_dog/delete_dog_widget.dart';
-import '/pages/components/post_options/post_options_widget.dart';
+import '/pages/components/post_options_post_copy/post_options_post_copy_widget.dart';
 import '/pages/components/video_details/video_details_widget.dart';
 import '/index.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart'
@@ -245,9 +245,15 @@ class _DegDetailsWidgetState extends State<DegDetailsWidget> {
                                             child: Padding(
                                               padding: MediaQuery.viewInsetsOf(
                                                   context),
-                                              child: DeleteDogWidget(
-                                                postParameters:
-                                                    degDetailsDogsRecord,
+                                              child: Container(
+                                                height:
+                                                    MediaQuery.sizeOf(context)
+                                                            .height *
+                                                        0.5,
+                                                child: DeleteDogWidget(
+                                                  postParameters:
+                                                      degDetailsDogsRecord,
+                                                ),
                                               ),
                                             ),
                                           );
@@ -269,8 +275,15 @@ class _DegDetailsWidgetState extends State<DegDetailsWidget> {
                                             child: Padding(
                                               padding: MediaQuery.viewInsetsOf(
                                                   context),
-                                              child: PostOptionsWidget(
-                                                postDog: degDetailsDogsRecord,
+                                              child: Container(
+                                                height:
+                                                    MediaQuery.sizeOf(context)
+                                                            .height *
+                                                        0.5,
+                                                child:
+                                                    PostOptionsPostCopyWidget(
+                                                  post: degDetailsDogsRecord,
+                                                ),
                                               ),
                                             ),
                                           );
@@ -485,8 +498,7 @@ class _DegDetailsWidgetState extends State<DegDetailsWidget> {
                                           ),
                                         ],
                                       ),
-                                    if (degDetailsDogsRecord.isVerified ==
-                                        false)
+                                    if (degDetailsDogsRecord.isVerified == true)
                                       Row(
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
@@ -658,7 +670,7 @@ class _DegDetailsWidgetState extends State<DegDetailsWidget> {
                                                   .fontStyle,
                                         ),
                                         color: FlutterFlowTheme.of(context)
-                                            .tertiary,
+                                            .alternate,
                                         fontSize:
                                             MediaQuery.sizeOf(context).width <
                                                     768.0
@@ -717,7 +729,11 @@ class _DegDetailsWidgetState extends State<DegDetailsWidget> {
                                 text: TextSpan(
                                   children: [
                                     TextSpan(
-                                      text: 'bold',
+                                      text: formatNumber(
+                                        degDetailsDogsRecord.dogPrice,
+                                        formatType: FormatType.decimal,
+                                        decimalType: DecimalType.automatic,
+                                      ),
                                       style: FlutterFlowTheme.of(context)
                                           .bodyMedium
                                           .override(

@@ -630,21 +630,30 @@ class _PostDetailsWidgetState extends State<PostDetailsWidget> {
                                                   highlightColor:
                                                       Colors.transparent,
                                                   onTap: () async {
-                                                    context.pushNamed(
-                                                      ViewProfilePageOtherWidget
-                                                          .routeName,
-                                                      queryParameters: {
-                                                        'userDetails':
-                                                            serializeParam(
-                                                          widget.userRecord,
-                                                          ParamType.Document,
-                                                        ),
-                                                      }.withoutNulls,
-                                                      extra: <String, dynamic>{
-                                                        'userDetails':
+                                                    if (widget.userRecord
+                                                            ?.reference ==
+                                                        currentUserReference) {
+                                                      context.pushNamed(
+                                                          Profilepage2Widget
+                                                              .routeName);
+                                                    } else {
+                                                      context.pushNamed(
+                                                        ViewProfilePageOtherWidget
+                                                            .routeName,
+                                                        queryParameters: {
+                                                          'userDetails':
+                                                              serializeParam(
                                                             widget.userRecord,
-                                                      },
-                                                    );
+                                                            ParamType.Document,
+                                                          ),
+                                                        }.withoutNulls,
+                                                        extra: <String,
+                                                            dynamic>{
+                                                          'userDetails': widget
+                                                              .userRecord,
+                                                        },
+                                                      );
+                                                    }
                                                   },
                                                   child: Text(
                                                     widget

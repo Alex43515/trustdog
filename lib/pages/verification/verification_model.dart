@@ -23,7 +23,7 @@ class VerificationModel extends FlutterFlowModel<VerificationWidget> {
   List<String> uploadedFileUrls_passport = [];
 
   // Stores action output result for [RevenueCat - Purchase] action in Button widget.
-  bool? verified;
+  bool? isPurchaseSuccessful;
 
   @override
   void initState(BuildContext context) {}
