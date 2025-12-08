@@ -10,6 +10,11 @@ class BottomLocationModel extends FlutterFlowModel<BottomLocationWidget> {
 
   DocumentReference? userRecord;
 
+  ///  State fields for stateful widgets in this component.
+
+  // Stores action output result for [AdMob - Show Interstitial Ad] action in Button widget.
+  bool? interstitialAdSuccess2;
+
   @override
   void initState(BuildContext context) {}
 

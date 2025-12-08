@@ -628,8 +628,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 return Container(
                                   width: MediaQuery.sizeOf(context).width * 1.0,
                                   decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
+                                    color: userPostUserPostsRecord.sponsored ==
+                                            true
+                                        ? FlutterFlowTheme.of(context).secondary
+                                        : FlutterFlowTheme.of(context)
+                                            .secondaryBackground,
                                     boxShadow: [
                                       BoxShadow(
                                         blurRadius: 4.0,
@@ -1659,6 +1662,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   );
                 },
               ),
+            ),
+            ListView(
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              children: [],
             ),
           ],
         ),

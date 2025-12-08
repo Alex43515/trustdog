@@ -70,7 +70,13 @@ class _DogMapWidgetState extends State<DogMapWidget> {
     }
 
     return StreamBuilder<List<UserPostsRecord>>(
-      stream: queryUserPostsRecord(),
+      stream: queryUserPostsRecord(
+        queryBuilder: (userPostsRecord) => userPostsRecord.where(
+          'location',
+          isGreaterThanOrEqualTo: currentUserLocationValue?.toGeoPoint(),
+        ),
+        limit: 100,
+      ),
       builder: (context, snapshot) {
         // Customize what your widget looks like when it's loading.
         if (!snapshot.hasData) {
@@ -122,10 +128,6 @@ class _DogMapWidgetState extends State<DogMapWidget> {
                     );
                   }
                   List<UsersRecord> columnUsersRecordList = snapshot.data!;
-                  // Return an empty Container when the item does not exist.
-                  if (snapshot.data!.isEmpty) {
-                    return Container();
-                  }
                   final columnUsersRecord = columnUsersRecordList.isNotEmpty
                       ? columnUsersRecordList.first
                       : null;

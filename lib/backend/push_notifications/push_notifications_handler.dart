@@ -171,7 +171,6 @@ final parametersBuilderMap =
   'profilepage2': ParameterData.none(),
   'test': ParameterData.none(),
   'DogMap': ParameterData.none(),
-  'homePageCopy': ParameterData.none(),
   'dogProfile_Update': (data) async => ParameterData(
         allParams: {
           'dogUser': await getDocumentParameter<DogsRecord>(
@@ -196,9 +195,7 @@ final parametersBuilderMap =
         },
       ),
   'underReviewDogs': ParameterData.none(),
-  'homePageCopyCopy': ParameterData.none(),
-  'homePageCopyCopyCopy': ParameterData.none(),
-  'homePageCopyCopy2': ParameterData.none(),
+  'homePage2': ParameterData.none(),
 };
 
 Map<String, dynamic> getInitialParameterData(Map<String, dynamic> data) {

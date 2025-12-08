@@ -276,13 +276,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               : DogMapWidget(),
         ),
         FFRoute(
-          name: HomePageCopyWidget.routeName,
-          path: HomePageCopyWidget.routePath,
-          builder: (context, params) => params.isEmpty
-              ? NavBarPage(initialPage: 'homePageCopy')
-              : HomePageCopyWidget(),
-        ),
-        FFRoute(
           name: DogProfileUpdateWidget.routeName,
           path: DogProfileUpdateWidget.routePath,
           asyncParams: {
@@ -303,9 +296,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: DashmobileWidget.routeName,
           path: DashmobileWidget.routePath,
-          builder: (context, params) => params.isEmpty
-              ? NavBarPage(initialPage: 'dashmobile')
-              : DashmobileWidget(),
+          builder: (context, params) => DashmobileWidget(),
         ),
         FFRoute(
           name: VerificationWidget.routeName,
@@ -349,25 +340,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => UnderReviewDogsWidget(),
         ),
         FFRoute(
-          name: HomePageCopyCopyWidget.routeName,
-          path: HomePageCopyCopyWidget.routePath,
+          name: HomePage2Widget.routeName,
+          path: HomePage2Widget.routePath,
           builder: (context, params) => params.isEmpty
-              ? NavBarPage(initialPage: 'homePageCopyCopy')
-              : HomePageCopyCopyWidget(),
-        ),
-        FFRoute(
-          name: HomePageCopyCopyCopyWidget.routeName,
-          path: HomePageCopyCopyCopyWidget.routePath,
-          builder: (context, params) => params.isEmpty
-              ? NavBarPage(initialPage: 'homePageCopyCopyCopy')
-              : HomePageCopyCopyCopyWidget(),
-        ),
-        FFRoute(
-          name: HomePageCopyCopy2Widget.routeName,
-          path: HomePageCopyCopy2Widget.routePath,
-          builder: (context, params) => params.isEmpty
-              ? NavBarPage(initialPage: 'homePageCopyCopy2')
-              : HomePageCopyCopy2Widget(),
+              ? NavBarPage(initialPage: 'homePage2')
+              : HomePage2Widget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
       observers: [routeObserver],

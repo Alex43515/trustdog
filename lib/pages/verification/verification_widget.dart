@@ -1189,12 +1189,13 @@ class _VerificationWidgetState extends State<VerificationWidget> {
                           (FFAppState().passportApp.isNotEmpty) &&
                           (FFAppState().micorchipAPP.isNotEmpty) &&
                           (FFAppState().pedigreeAPP.isNotEmpty)) {
-                        _model.verified = await revenue_cat
-                            .purchasePackage('dog_verification_access');
-                        if (_model.verified == true) {
+                        _model.isPurchaseSuccessful =
+                            await revenue_cat.purchasePackage('\$rc_lifetime');
+                        if (_model.isPurchaseSuccessful == true) {
                           await widget.dogDetails!.update({
                             ...createDogsRecordData(
                               pending: true,
+                              isVerified: true,
                             ),
                             ...mapToFirestore(
                               {
@@ -1310,11 +1311,8 @@ class _VerificationWidgetState extends State<VerificationWidget> {
                           ),
                     ),
                     TextSpan(
-                      text: 'Hello World ',
-                      style: TextStyle(),
-                    ),
-                    TextSpan(
-                      text: ' for 1 dog',
+                      text: revenue_cat.offerings!.current!.lifetime!
+                          .storeProduct.priceString,
                       style: TextStyle(),
                     )
                   ],
@@ -1374,7 +1372,7 @@ class _VerificationWidgetState extends State<VerificationWidget> {
                               FlutterFlowTheme.of(context).bodyMedium.fontStyle,
                         ),
                         color: FlutterFlowTheme.of(context).accent1,
-                        fontSize: 15.0,
+                        fontSize: 14.0,
                         letterSpacing: 0.0,
                         fontWeight: FontWeight.w500,
                         fontStyle:
