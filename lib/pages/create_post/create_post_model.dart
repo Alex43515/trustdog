@@ -23,11 +23,21 @@ class CreatePostModel extends FlutterFlowModel<CreatePostWidget> {
 
   ///  State fields for stateful widgets in this page.
 
+  // Stores action output result for [Custom Action - pickImage] action in Container widget.
+  String? pickedImage;
+  // Stores action output result for [Custom Action - compressImage] action in Container widget.
+  FFUploadedFile? compressImage;
   bool isDataUploading_uploadDataNtw = false;
   FFUploadedFile uploadedLocalFile_uploadDataNtw =
       FFUploadedFile(bytes: Uint8List.fromList([]), originalFilename: '');
   String uploadedFileUrl_uploadDataNtw = '';
 
+  // Stores action output result for [Custom Action - pickVideo] action in Container widget.
+  String? pickVideo;
+  // Stores action output result for [Custom Action - compressVideo] action in Container widget.
+  FFUploadedFile? compressVideo;
+  // Stores action output result for [Custom Action - generate2SecondVideoPreview] action in Container widget.
+  FFUploadedFile? previewVideo;
   bool isDataUploading_uploadDataNtwVideo = false;
   FFUploadedFile uploadedLocalFile_uploadDataNtwVideo =
       FFUploadedFile(bytes: Uint8List.fromList([]), originalFilename: '');
@@ -65,6 +75,10 @@ class CreatePostModel extends FlutterFlowModel<CreatePostWidget> {
 
   // State field(s) for PlacePicker widget.
   FFPlace placePickerValue = FFPlace();
+  bool isDataUploading_uploadDataDcl = false;
+  FFUploadedFile uploadedLocalFile_uploadDataDcl =
+      FFUploadedFile(bytes: Uint8List.fromList([]), originalFilename: '');
+  String uploadedFileUrl_uploadDataDcl = '';
 
   @override
   void initState(BuildContext context) {}

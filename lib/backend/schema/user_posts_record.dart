@@ -138,6 +138,11 @@ class UserPostsRecord extends FirestoreRecord {
   int get price => _price ?? 0;
   bool hasPrice() => _price != null;
 
+  // "videoThumbnail" field.
+  String? _videoThumbnail;
+  String get videoThumbnail => _videoThumbnail ?? '';
+  bool hasVideoThumbnail() => _videoThumbnail != null;
+
   void _initializeFields() {
     _postPhoto = snapshotData['postPhoto'] as String?;
     _postTitle = snapshotData['postTitle'] as String?;
@@ -163,6 +168,7 @@ class UserPostsRecord extends FirestoreRecord {
     _priceMax = castToType<double>(snapshotData['priceMax']);
     _age = castToType<int>(snapshotData['age']);
     _price = castToType<int>(snapshotData['price']);
+    _videoThumbnail = snapshotData['videoThumbnail'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -269,6 +275,7 @@ class UserPostsRecord extends FirestoreRecord {
             ParamType.int,
             false,
           ),
+          'videoThumbnail': snapshot.data['videoThumbnail'],
         },
         UserPostsRecord.collection.doc(snapshot.objectID),
       );
@@ -327,6 +334,7 @@ Map<String, dynamic> createUserPostsRecordData({
   double? priceMax,
   int? age,
   int? price,
+  String? videoThumbnail,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -352,6 +360,7 @@ Map<String, dynamic> createUserPostsRecordData({
       'priceMax': priceMax,
       'age': age,
       'price': price,
+      'videoThumbnail': videoThumbnail,
     }.withoutNulls,
   );
 
@@ -387,7 +396,8 @@ class UserPostsRecordDocumentEquality implements Equality<UserPostsRecord> {
         e1?.priceMin == e2?.priceMin &&
         e1?.priceMax == e2?.priceMax &&
         e1?.age == e2?.age &&
-        e1?.price == e2?.price;
+        e1?.price == e2?.price &&
+        e1?.videoThumbnail == e2?.videoThumbnail;
   }
 
   @override
@@ -415,7 +425,8 @@ class UserPostsRecordDocumentEquality implements Equality<UserPostsRecord> {
         e?.priceMin,
         e?.priceMax,
         e?.age,
-        e?.price
+        e?.price,
+        e?.videoThumbnail
       ]);
 
   @override

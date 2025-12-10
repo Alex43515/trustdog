@@ -45,4 +45,3 @@ export '/dog_verification/status_verification/status_verification_widget.dart'
     show StatusVerificationWidget;
 export '/dog_verification/under_review_dogs/under_review_dogs_widget.dart'
     show UnderReviewDogsWidget;
-export '/home_page2/home_page2_widget.dart' show HomePage2Widget;

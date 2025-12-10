@@ -338,13 +338,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: UnderReviewDogsWidget.routeName,
           path: UnderReviewDogsWidget.routePath,
           builder: (context, params) => UnderReviewDogsWidget(),
-        ),
-        FFRoute(
-          name: HomePage2Widget.routeName,
-          path: HomePage2Widget.routePath,
-          builder: (context, params) => params.isEmpty
-              ? NavBarPage(initialPage: 'homePage2')
-              : HomePage2Widget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
       observers: [routeObserver],

@@ -10,6 +10,7 @@ import '/flutter_flow/flutter_flow_video_player.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import '/flutter_flow/upload_data.dart';
+import '/custom_code/actions/index.dart' as actions;
 import '/flutter_flow/custom_functions.dart' as functions;
 import '/index.dart';
 import 'package:flutter/material.dart';
@@ -362,46 +363,28 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  final selectedMedia =
-                                      await selectMediaWithSourceBottomSheet(
-                                    context: context,
-                                    allowPhoto: true,
-                                    backgroundColor:
-                                        FlutterFlowTheme.of(context).dark600,
-                                    textColor:
-                                        FlutterFlowTheme.of(context).tertiary,
-                                    pickerFontFamily: 'Lexend Deca',
+                                  _model.pickedImage =
+                                      await actions.pickImage();
+                                  _model.compressImage =
+                                      await actions.compressImage(
+                                    _model.pickedImage!,
                                   );
-                                  if (selectedMedia != null &&
-                                      selectedMedia.every((m) =>
-                                          validateFileFormat(
-                                              m.storagePath, context))) {
+                                  {
                                     safeSetState(() => _model
                                         .isDataUploading_uploadDataNtw = true);
                                     var selectedUploadedFiles =
                                         <FFUploadedFile>[];
-
+                                    var selectedMedia = <SelectedFile>[];
                                     var downloadUrls = <String>[];
                                     try {
-                                      showUploadMessage(
-                                        context,
-                                        'Uploading file...',
-                                        showLoading: true,
+                                      selectedUploadedFiles = _model
+                                              .compressImage!.bytes!.isNotEmpty
+                                          ? [_model.compressImage!]
+                                          : <FFUploadedFile>[];
+                                      selectedMedia =
+                                          selectedFilesFromUploadedFiles(
+                                        selectedUploadedFiles,
                                       );
-                                      selectedUploadedFiles = selectedMedia
-                                          .map((m) => FFUploadedFile(
-                                                name: m.storagePath
-                                                    .split('/')
-                                                    .last,
-                                                bytes: m.bytes,
-                                                height: m.dimensions?.height,
-                                                width: m.dimensions?.width,
-                                                blurHash: m.blurHash,
-                                                originalFilename:
-                                                    m.originalFilename,
-                                              ))
-                                          .toList();
-
                                       downloadUrls = (await Future.wait(
                                         selectedMedia.map(
                                           (m) async => await uploadData(
@@ -412,8 +395,6 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                                           .map((u) => u!)
                                           .toList();
                                     } finally {
-                                      ScaffoldMessenger.of(context)
-                                          .hideCurrentSnackBar();
                                       _model.isDataUploading_uploadDataNtw =
                                           false;
                                     }
@@ -427,14 +408,13 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                                         _model.uploadedFileUrl_uploadDataNtw =
                                             downloadUrls.first;
                                       });
-                                      showUploadMessage(context, 'Success!');
                                     } else {
                                       safeSetState(() {});
-                                      showUploadMessage(
-                                          context, 'Failed to upload data');
                                       return;
                                     }
                                   }
+
+                                  safeSetState(() {});
                                 },
                                 child: Container(
                                   width: 100.0,
@@ -517,27 +497,24 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  final selectedMedia =
-                                      await selectMediaWithSourceBottomSheet(
-                                    context: context,
-                                    allowPhoto: false,
-                                    allowVideo: true,
-                                    backgroundColor:
-                                        FlutterFlowTheme.of(context).dark600,
-                                    textColor:
-                                        FlutterFlowTheme.of(context).tertiary,
-                                    pickerFontFamily: 'Lexend Deca',
+                                  _model.pickVideo = await actions.pickVideo(
+                                    false,
                                   );
-                                  if (selectedMedia != null &&
-                                      selectedMedia.every((m) =>
-                                          validateFileFormat(
-                                              m.storagePath, context))) {
+                                  _model.compressVideo =
+                                      await actions.compressVideo(
+                                    _model.pickVideo!,
+                                  );
+                                  _model.previewVideo =
+                                      await actions.generate2SecondVideoPreview(
+                                    _model.compressVideo!,
+                                  );
+                                  {
                                     safeSetState(() => _model
                                             .isDataUploading_uploadDataNtwVideo =
                                         true);
                                     var selectedUploadedFiles =
                                         <FFUploadedFile>[];
-
+                                    var selectedMedia = <SelectedFile>[];
                                     var downloadUrls = <String>[];
                                     try {
                                       showUploadMessage(
@@ -545,20 +522,14 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                                         'Uploading file...',
                                         showLoading: true,
                                       );
-                                      selectedUploadedFiles = selectedMedia
-                                          .map((m) => FFUploadedFile(
-                                                name: m.storagePath
-                                                    .split('/')
-                                                    .last,
-                                                bytes: m.bytes,
-                                                height: m.dimensions?.height,
-                                                width: m.dimensions?.width,
-                                                blurHash: m.blurHash,
-                                                originalFilename:
-                                                    m.originalFilename,
-                                              ))
-                                          .toList();
-
+                                      selectedUploadedFiles = _model
+                                              .compressVideo!.bytes!.isNotEmpty
+                                          ? [_model.compressVideo!]
+                                          : <FFUploadedFile>[];
+                                      selectedMedia =
+                                          selectedFilesFromUploadedFiles(
+                                        selectedUploadedFiles,
+                                      );
                                       downloadUrls = (await Future.wait(
                                         selectedMedia.map(
                                           (m) async => await uploadData(
@@ -592,6 +563,8 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                                       return;
                                     }
                                   }
+
+                                  safeSetState(() {});
                                 },
                                 child: Container(
                                   width: 100.0,
@@ -2492,41 +2465,153 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                           EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 40.0),
                       child: FFButtonWidget(
                         onPressed: () async {
-                          await UserPostsRecord.collection.doc().set({
-                            ...createUserPostsRecordData(
-                              postPhoto: _model.uploadedFileUrl_uploadDataNtw,
-                              postDescription:
-                                  _model.descriptionTextController.text,
-                              postUser: currentUserReference,
-                              postTitle: _model.titleTextController.text,
-                              timePosted: getCurrentTimestamp,
-                              postOwner: true,
-                              breed: _model.dropDownValue1,
-                              location: _model.placePickerValue.latLng,
-                              locationName: _model.placePickerValue.city,
-                              currency: _model.currencyValue,
-                              age: int.tryParse(_model.ageTextController.text),
-                              price:
-                                  int.tryParse(_model.priceTextController.text),
-                              sex: _model.dropDownValue2,
-                            ),
-                            ...mapToFirestore(
-                              {
-                                'dogProfiles': _model.selectedDogs,
-                              },
-                            ),
-                          });
+                          if (_model.uploadedFileUrl_uploadDataNtwVideo != '') {
+                            {
+                              safeSetState(() =>
+                                  _model.isDataUploading_uploadDataDcl = true);
+                              var selectedUploadedFiles = <FFUploadedFile>[];
+                              var selectedMedia = <SelectedFile>[];
+                              var downloadUrls = <String>[];
+                              try {
+                                showUploadMessage(
+                                  context,
+                                  'Uploading file...',
+                                  showLoading: true,
+                                );
+                                selectedUploadedFiles =
+                                    _model.previewVideo!.bytes!.isNotEmpty
+                                        ? [_model.previewVideo!]
+                                        : <FFUploadedFile>[];
+                                selectedMedia = selectedFilesFromUploadedFiles(
+                                  selectedUploadedFiles,
+                                );
+                                downloadUrls = (await Future.wait(
+                                  selectedMedia.map(
+                                    (m) async => await uploadData(
+                                        m.storagePath, m.bytes),
+                                  ),
+                                ))
+                                    .where((u) => u != null)
+                                    .map((u) => u!)
+                                    .toList();
+                              } finally {
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
+                                _model.isDataUploading_uploadDataDcl = false;
+                              }
+                              if (selectedUploadedFiles.length ==
+                                      selectedMedia.length &&
+                                  downloadUrls.length == selectedMedia.length) {
+                                safeSetState(() {
+                                  _model.uploadedLocalFile_uploadDataDcl =
+                                      selectedUploadedFiles.first;
+                                  _model.uploadedFileUrl_uploadDataDcl =
+                                      downloadUrls.first;
+                                });
+                                showUploadMessage(context, 'Success!');
+                              } else {
+                                safeSetState(() {});
+                                showUploadMessage(
+                                    context, 'Failed to upload data');
+                                return;
+                              }
+                            }
 
-                          context.pushNamed(
-                            HomePageWidget.routeName,
-                            extra: <String, dynamic>{
-                              kTransitionInfoKey: TransitionInfo(
-                                hasTransition: true,
-                                transitionType: PageTransitionType.leftToRight,
-                                duration: Duration(milliseconds: 250),
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  'Creating your post',
+                                  style: TextStyle(
+                                    color:
+                                        FlutterFlowTheme.of(context).tertiary,
+                                  ),
+                                ),
+                                duration: Duration(milliseconds: 4000),
+                                backgroundColor:
+                                    FlutterFlowTheme.of(context).primary,
                               ),
-                            },
-                          );
+                            );
+
+                            await UserPostsRecord.collection.doc().set({
+                              ...createUserPostsRecordData(
+                                postPhoto: _model.uploadedFileUrl_uploadDataNtw,
+                                postDescription:
+                                    _model.descriptionTextController.text,
+                                postUser: currentUserReference,
+                                postTitle: _model.titleTextController.text,
+                                timePosted: getCurrentTimestamp,
+                                postOwner: true,
+                                breed: _model.dropDownValue1,
+                                location: _model.placePickerValue.latLng,
+                                locationName: _model.placePickerValue.city,
+                                currency: _model.currencyValue,
+                                age:
+                                    int.tryParse(_model.ageTextController.text),
+                                price: int.tryParse(
+                                    _model.priceTextController.text),
+                                sex: _model.dropDownValue2,
+                                videoThumbnail:
+                                    _model.uploadedFileUrl_uploadDataDcl,
+                                postVideo:
+                                    _model.uploadedFileUrl_uploadDataNtwVideo,
+                              ),
+                              ...mapToFirestore(
+                                {
+                                  'dogProfiles': _model.selectedDogs,
+                                },
+                              ),
+                            });
+
+                            context.pushNamed(
+                              HomePageWidget.routeName,
+                              extra: <String, dynamic>{
+                                kTransitionInfoKey: TransitionInfo(
+                                  hasTransition: true,
+                                  transitionType:
+                                      PageTransitionType.leftToRight,
+                                  duration: Duration(milliseconds: 250),
+                                ),
+                              },
+                            );
+                          } else {
+                            await UserPostsRecord.collection.doc().set({
+                              ...createUserPostsRecordData(
+                                postPhoto: _model.uploadedFileUrl_uploadDataNtw,
+                                postDescription:
+                                    _model.descriptionTextController.text,
+                                postUser: currentUserReference,
+                                postTitle: _model.titleTextController.text,
+                                timePosted: getCurrentTimestamp,
+                                postOwner: true,
+                                breed: _model.dropDownValue1,
+                                location: _model.placePickerValue.latLng,
+                                locationName: _model.placePickerValue.city,
+                                currency: _model.currencyValue,
+                                age:
+                                    int.tryParse(_model.ageTextController.text),
+                                price: int.tryParse(
+                                    _model.priceTextController.text),
+                                sex: _model.dropDownValue2,
+                              ),
+                              ...mapToFirestore(
+                                {
+                                  'dogProfiles': _model.selectedDogs,
+                                },
+                              ),
+                            });
+
+                            context.pushNamed(
+                              HomePageWidget.routeName,
+                              extra: <String, dynamic>{
+                                kTransitionInfoKey: TransitionInfo(
+                                  hasTransition: true,
+                                  transitionType:
+                                      PageTransitionType.leftToRight,
+                                  duration: Duration(milliseconds: 250),
+                                ),
+                              },
+                            );
+                          }
                         },
                         text: 'Post Listing',
                         options: FFButtonOptions(
