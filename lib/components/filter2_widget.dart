@@ -878,7 +878,19 @@ class _Filter2WidgetState extends State<Filter2Widget>
                                     FFAppState().priceMax = 5000.0;
                                     FFAppState().age = 0;
                                     safeSetState(() {});
-                                    Navigator.pop(context);
+
+                                    context.pushNamed(
+                                      HomePageWidget.routeName,
+                                      extra: <String, dynamic>{
+                                        kTransitionInfoKey: TransitionInfo(
+                                          hasTransition: true,
+                                          transitionType:
+                                              PageTransitionType.rightToLeft,
+                                          duration:
+                                              Duration(milliseconds: 1000),
+                                        ),
+                                      },
+                                    );
                                   },
                                   text: 'Clear All',
                                   options: FFButtonOptions(
@@ -927,11 +939,20 @@ class _Filter2WidgetState extends State<Filter2Widget>
                                         _model.textController.text;
                                     FFAppState().filterSex =
                                         _model.radioButtonValue!;
-                                    FFAppState().update(() {});
                                     safeSetState(() {});
-                                    Navigator.pop(context);
 
-                                    context.goNamed(HomePageWidget.routeName);
+                                    context.pushNamed(
+                                      HomePageWidget.routeName,
+                                      extra: <String, dynamic>{
+                                        kTransitionInfoKey: TransitionInfo(
+                                          hasTransition: true,
+                                          transitionType:
+                                              PageTransitionType.leftToRight,
+                                          duration:
+                                              Duration(milliseconds: 1000),
+                                        ),
+                                      },
+                                    );
                                   },
                                   text: 'Apply Filters',
                                   options: FFButtonOptions(

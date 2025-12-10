@@ -166,7 +166,6 @@ class _NavBarPageState extends State<NavBarPage> {
       'createPost': CreatePostWidget(),
       'allChatsPage': AllChatsPageWidget(),
       'profilepage2': Profilepage2Widget(),
-      'homePage2': HomePage2Widget(),
     };
     final currentIndex = tabs.keys.toList().indexOf(_currentPageName);
 
@@ -228,14 +227,6 @@ class _NavBarPageState extends State<NavBarPage> {
               size: 24.0,
             ),
             label: 'Profile',
-            tooltip: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home_outlined,
-              size: 24.0,
-            ),
-            label: 'Home',
             tooltip: '',
           )
         ],

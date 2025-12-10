@@ -1196,6 +1196,7 @@ class _VerificationWidgetState extends State<VerificationWidget> {
                             ...createDogsRecordData(
                               pending: true,
                               isVerified: true,
+                              isHighlighted: true,
                             ),
                             ...mapToFirestore(
                               {

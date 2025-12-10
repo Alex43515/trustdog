@@ -10,6 +10,7 @@ import '/flutter_flow/flutter_flow_video_player.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import '/flutter_flow/upload_data.dart';
+import '/custom_code/actions/index.dart' as actions;
 import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -199,19 +200,14 @@ class _CreateDogProfileNewWidgetState extends State<CreateDogProfileNewWidget> {
                               hoverColor: Colors.transparent,
                               highlightColor: Colors.transparent,
                               onTap: () async {
-                                final selectedMedia = await selectMedia(
-                                  mediaSource: MediaSource.photoGallery,
-                                  multiImage: true,
-                                );
-                                if (selectedMedia != null &&
-                                    selectedMedia.every((m) =>
-                                        validateFileFormat(
-                                            m.storagePath, context))) {
+                                _model.multipleImages =
+                                    await actions.pickAndCompressImages();
+                                {
                                   safeSetState(() => _model
                                       .isDataUploading_uploadDataNtw2 = true);
                                   var selectedUploadedFiles =
                                       <FFUploadedFile>[];
-
+                                  var selectedMedia = <SelectedFile>[];
                                   var downloadUrls = <String>[];
                                   try {
                                     showUploadMessage(
@@ -219,19 +215,13 @@ class _CreateDogProfileNewWidgetState extends State<CreateDogProfileNewWidget> {
                                       'Uploading file...',
                                       showLoading: true,
                                     );
-                                    selectedUploadedFiles = selectedMedia
-                                        .map((m) => FFUploadedFile(
-                                              name:
-                                                  m.storagePath.split('/').last,
-                                              bytes: m.bytes,
-                                              height: m.dimensions?.height,
-                                              width: m.dimensions?.width,
-                                              blurHash: m.blurHash,
-                                              originalFilename:
-                                                  m.originalFilename,
-                                            ))
-                                        .toList();
-
+                                    selectedUploadedFiles =
+                                        _model.multipleImages!;
+                                    selectedMedia =
+                                        selectedFilesFromUploadedFiles(
+                                      selectedUploadedFiles,
+                                      isMultiData: true,
+                                    );
                                     downloadUrls = (await Future.wait(
                                       selectedMedia.map(
                                         (m) async => await uploadData(
@@ -265,6 +255,8 @@ class _CreateDogProfileNewWidgetState extends State<CreateDogProfileNewWidget> {
                                     return;
                                   }
                                 }
+
+                                safeSetState(() {});
                               },
                               child: Container(
                                 width: 100.0,
@@ -370,27 +362,24 @@ class _CreateDogProfileNewWidgetState extends State<CreateDogProfileNewWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  final selectedMedia =
-                                      await selectMediaWithSourceBottomSheet(
-                                    context: context,
-                                    allowPhoto: false,
-                                    allowVideo: true,
-                                    backgroundColor:
-                                        FlutterFlowTheme.of(context).dark600,
-                                    textColor:
-                                        FlutterFlowTheme.of(context).tertiary,
-                                    pickerFontFamily: 'Lexend Deca',
+                                  _model.pickVideo = await actions.pickVideo(
+                                    false,
                                   );
-                                  if (selectedMedia != null &&
-                                      selectedMedia.every((m) =>
-                                          validateFileFormat(
-                                              m.storagePath, context))) {
+                                  _model.compressVideo =
+                                      await actions.compressVideo(
+                                    _model.pickVideo!,
+                                  );
+                                  _model.videoPreview =
+                                      await actions.generate2SecondVideoPreview(
+                                    _model.compressVideo!,
+                                  );
+                                  {
                                     safeSetState(() => _model
                                             .isDataUploading_uploadDataNtwVideo2 =
                                         true);
                                     var selectedUploadedFiles =
                                         <FFUploadedFile>[];
-
+                                    var selectedMedia = <SelectedFile>[];
                                     var downloadUrls = <String>[];
                                     try {
                                       showUploadMessage(
@@ -398,20 +387,14 @@ class _CreateDogProfileNewWidgetState extends State<CreateDogProfileNewWidget> {
                                         'Uploading file...',
                                         showLoading: true,
                                       );
-                                      selectedUploadedFiles = selectedMedia
-                                          .map((m) => FFUploadedFile(
-                                                name: m.storagePath
-                                                    .split('/')
-                                                    .last,
-                                                bytes: m.bytes,
-                                                height: m.dimensions?.height,
-                                                width: m.dimensions?.width,
-                                                blurHash: m.blurHash,
-                                                originalFilename:
-                                                    m.originalFilename,
-                                              ))
-                                          .toList();
-
+                                      selectedUploadedFiles = _model
+                                              .compressVideo!.bytes!.isNotEmpty
+                                          ? [_model.compressVideo!]
+                                          : <FFUploadedFile>[];
+                                      selectedMedia =
+                                          selectedFilesFromUploadedFiles(
+                                        selectedUploadedFiles,
+                                      );
                                       downloadUrls = (await Future.wait(
                                         selectedMedia.map(
                                           (m) async => await uploadData(
@@ -449,6 +432,8 @@ class _CreateDogProfileNewWidgetState extends State<CreateDogProfileNewWidget> {
                                   FFAppState().video1 = _model
                                       .uploadedFileUrl_uploadDataNtwVideo2;
                                   safeSetState(() {});
+
+                                  safeSetState(() {});
                                 },
                                 child: Container(
                                   width: 100.0,
@@ -485,27 +470,24 @@ class _CreateDogProfileNewWidgetState extends State<CreateDogProfileNewWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  final selectedMedia =
-                                      await selectMediaWithSourceBottomSheet(
-                                    context: context,
-                                    allowPhoto: false,
-                                    allowVideo: true,
-                                    backgroundColor:
-                                        FlutterFlowTheme.of(context).dark600,
-                                    textColor:
-                                        FlutterFlowTheme.of(context).tertiary,
-                                    pickerFontFamily: 'Lexend Deca',
+                                  _model.pickvideo2 = await actions.pickVideo(
+                                    false,
                                   );
-                                  if (selectedMedia != null &&
-                                      selectedMedia.every((m) =>
-                                          validateFileFormat(
-                                              m.storagePath, context))) {
+                                  _model.compressvideo2 =
+                                      await actions.compressVideo(
+                                    _model.pickvideo2!,
+                                  );
+                                  _model.previewVideo2 =
+                                      await actions.generate2SecondVideoPreview(
+                                    _model.compressvideo2!,
+                                  );
+                                  {
                                     safeSetState(() => _model
                                             .isDataUploading_uploadDataNtwVideo3 =
                                         true);
                                     var selectedUploadedFiles =
                                         <FFUploadedFile>[];
-
+                                    var selectedMedia = <SelectedFile>[];
                                     var downloadUrls = <String>[];
                                     try {
                                       showUploadMessage(
@@ -513,20 +495,14 @@ class _CreateDogProfileNewWidgetState extends State<CreateDogProfileNewWidget> {
                                         'Uploading file...',
                                         showLoading: true,
                                       );
-                                      selectedUploadedFiles = selectedMedia
-                                          .map((m) => FFUploadedFile(
-                                                name: m.storagePath
-                                                    .split('/')
-                                                    .last,
-                                                bytes: m.bytes,
-                                                height: m.dimensions?.height,
-                                                width: m.dimensions?.width,
-                                                blurHash: m.blurHash,
-                                                originalFilename:
-                                                    m.originalFilename,
-                                              ))
-                                          .toList();
-
+                                      selectedUploadedFiles = _model
+                                              .compressvideo2!.bytes!.isNotEmpty
+                                          ? [_model.compressvideo2!]
+                                          : <FFUploadedFile>[];
+                                      selectedMedia =
+                                          selectedFilesFromUploadedFiles(
+                                        selectedUploadedFiles,
+                                      );
                                       downloadUrls = (await Future.wait(
                                         selectedMedia.map(
                                           (m) async => await uploadData(
@@ -564,6 +540,8 @@ class _CreateDogProfileNewWidgetState extends State<CreateDogProfileNewWidget> {
                                   FFAppState().video2 = _model
                                       .uploadedFileUrl_uploadDataNtwVideo3;
                                   safeSetState(() {});
+
+                                  safeSetState(() {});
                                 },
                                 child: Container(
                                   width: 100.0,
@@ -600,27 +578,24 @@ class _CreateDogProfileNewWidgetState extends State<CreateDogProfileNewWidget> {
                                 hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  final selectedMedia =
-                                      await selectMediaWithSourceBottomSheet(
-                                    context: context,
-                                    allowPhoto: false,
-                                    allowVideo: true,
-                                    backgroundColor:
-                                        FlutterFlowTheme.of(context).dark600,
-                                    textColor:
-                                        FlutterFlowTheme.of(context).tertiary,
-                                    pickerFontFamily: 'Lexend Deca',
+                                  _model.pickVideo3 = await actions.pickVideo(
+                                    false,
                                   );
-                                  if (selectedMedia != null &&
-                                      selectedMedia.every((m) =>
-                                          validateFileFormat(
-                                              m.storagePath, context))) {
+                                  _model.compressVideo3 =
+                                      await actions.compressVideo(
+                                    _model.pickVideo3!,
+                                  );
+                                  _model.previewVideo3 =
+                                      await actions.generate2SecondVideoPreview(
+                                    _model.compressVideo3!,
+                                  );
+                                  {
                                     safeSetState(() => _model
                                             .isDataUploading_uploadDataNtwVideo4 =
                                         true);
                                     var selectedUploadedFiles =
                                         <FFUploadedFile>[];
-
+                                    var selectedMedia = <SelectedFile>[];
                                     var downloadUrls = <String>[];
                                     try {
                                       showUploadMessage(
@@ -628,20 +603,14 @@ class _CreateDogProfileNewWidgetState extends State<CreateDogProfileNewWidget> {
                                         'Uploading file...',
                                         showLoading: true,
                                       );
-                                      selectedUploadedFiles = selectedMedia
-                                          .map((m) => FFUploadedFile(
-                                                name: m.storagePath
-                                                    .split('/')
-                                                    .last,
-                                                bytes: m.bytes,
-                                                height: m.dimensions?.height,
-                                                width: m.dimensions?.width,
-                                                blurHash: m.blurHash,
-                                                originalFilename:
-                                                    m.originalFilename,
-                                              ))
-                                          .toList();
-
+                                      selectedUploadedFiles = _model
+                                              .compressVideo3!.bytes!.isNotEmpty
+                                          ? [_model.compressVideo3!]
+                                          : <FFUploadedFile>[];
+                                      selectedMedia =
+                                          selectedFilesFromUploadedFiles(
+                                        selectedUploadedFiles,
+                                      );
                                       downloadUrls = (await Future.wait(
                                         selectedMedia.map(
                                           (m) async => await uploadData(
@@ -678,6 +647,8 @@ class _CreateDogProfileNewWidgetState extends State<CreateDogProfileNewWidget> {
 
                                   FFAppState().video3 = _model
                                       .uploadedFileUrl_uploadDataNtwVideo4;
+                                  safeSetState(() {});
+
                                   safeSetState(() {});
                                 },
                                 child: Container(

@@ -13,20 +13,40 @@ class CreateDogProfileNewModel
 
   ///  State fields for stateful widgets in this page.
 
+  // Stores action output result for [Custom Action - pickAndCompressImages] action in Container widget.
+  List<FFUploadedFile>? multipleImages;
   bool isDataUploading_uploadDataNtw2 = false;
   List<FFUploadedFile> uploadedLocalFiles_uploadDataNtw2 = [];
   List<String> uploadedFileUrls_uploadDataNtw2 = [];
 
+  // Stores action output result for [Custom Action - pickVideo] action in video1 widget.
+  String? pickVideo;
+  // Stores action output result for [Custom Action - compressVideo] action in video1 widget.
+  FFUploadedFile? compressVideo;
+  // Stores action output result for [Custom Action - generate2SecondVideoPreview] action in video1 widget.
+  FFUploadedFile? videoPreview;
   bool isDataUploading_uploadDataNtwVideo2 = false;
   FFUploadedFile uploadedLocalFile_uploadDataNtwVideo2 =
       FFUploadedFile(bytes: Uint8List.fromList([]), originalFilename: '');
   String uploadedFileUrl_uploadDataNtwVideo2 = '';
 
+  // Stores action output result for [Custom Action - pickVideo] action in video2 widget.
+  String? pickvideo2;
+  // Stores action output result for [Custom Action - compressVideo] action in video2 widget.
+  FFUploadedFile? compressvideo2;
+  // Stores action output result for [Custom Action - generate2SecondVideoPreview] action in video2 widget.
+  FFUploadedFile? previewVideo2;
   bool isDataUploading_uploadDataNtwVideo3 = false;
   FFUploadedFile uploadedLocalFile_uploadDataNtwVideo3 =
       FFUploadedFile(bytes: Uint8List.fromList([]), originalFilename: '');
   String uploadedFileUrl_uploadDataNtwVideo3 = '';
 
+  // Stores action output result for [Custom Action - pickVideo] action in video3 widget.
+  String? pickVideo3;
+  // Stores action output result for [Custom Action - compressVideo] action in video3 widget.
+  FFUploadedFile? compressVideo3;
+  // Stores action output result for [Custom Action - generate2SecondVideoPreview] action in video3 widget.
+  FFUploadedFile? previewVideo3;
   bool isDataUploading_uploadDataNtwVideo4 = false;
   FFUploadedFile uploadedLocalFile_uploadDataNtwVideo4 =
       FFUploadedFile(bytes: Uint8List.fromList([]), originalFilename: '');
