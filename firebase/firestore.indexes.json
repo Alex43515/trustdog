@@ -71,16 +71,44 @@
       ]
     },
     {
-      "collectionGroup": "dogs",
+      "collectionGroup": "userPosts",
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "userAssociation",
+          "fieldPath": "pending",
           "order": "ASCENDING"
         },
         {
-          "fieldPath": "date",
+          "fieldPath": "timePosted",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "userPosts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "verified",
           "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "timePosted",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "userPosts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "rejected",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "timePosted",
+          "order": "DESCENDING"
         }
       ]
     },

@@ -1,4 +1,5 @@
 import '/backend/api_requests/api_calls.dart';
+import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
 import 'dart:async';
@@ -19,8 +20,11 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   String? Function(BuildContext, String?)? textControllerValidator;
   // State field(s) for ListView widget.
 
-  PagingController<ApiPagingParams, dynamic>? listViewPagingController2;
-  Function(ApiPagingParams nextPageMarker)? listViewApiCall2;
+  PagingController<ApiPagingParams, dynamic>? listViewPagingController;
+  Function(ApiPagingParams nextPageMarker)? listViewApiCall;
+
+  // Stores action output result for [Backend Call - Create Document] action in Icon widget.
+  NotificationsRecord? postNot;
 
   @override
   void initState(BuildContext context) {}
@@ -30,11 +34,11 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
     textFieldFocusNode?.dispose();
     textController?.dispose();
 
-    listViewPagingController2?.dispose();
+    listViewPagingController?.dispose();
   }
 
   /// Additional helper methods.
-  Future waitForOnePageForListView2({
+  Future waitForOnePageForListView({
     double minWait = 0,
     double maxWait = double.infinity,
   }) async {
@@ -43,21 +47,21 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
       await Future.delayed(Duration(milliseconds: 50));
       final timeElapsed = stopwatch.elapsedMilliseconds;
       final requestComplete =
-          (listViewPagingController2?.nextPageKey?.nextPageNumber ?? 0) > 0;
+          (listViewPagingController?.nextPageKey?.nextPageNumber ?? 0) > 0;
       if (timeElapsed > maxWait || (requestComplete && timeElapsed > minWait)) {
         break;
       }
     }
   }
 
-  PagingController<ApiPagingParams, dynamic> setListViewController2(
+  PagingController<ApiPagingParams, dynamic> setListViewController(
     Function(ApiPagingParams) apiCall,
   ) {
-    listViewApiCall2 = apiCall;
-    return listViewPagingController2 ??= _createListViewController2(apiCall);
+    listViewApiCall = apiCall;
+    return listViewPagingController ??= _createListViewController(apiCall);
   }
 
-  PagingController<ApiPagingParams, dynamic> _createListViewController2(
+  PagingController<ApiPagingParams, dynamic> _createListViewController(
     Function(ApiPagingParams) query,
   ) {
     final controller = PagingController<ApiPagingParams, dynamic>(
@@ -67,15 +71,15 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
         lastResponse: null,
       ),
     );
-    return controller..addPageRequestListener(listViewQueryAlgoliaPage2);
+    return controller..addPageRequestListener(listViewQueryAlgoliaPage);
   }
 
-  void listViewQueryAlgoliaPage2(ApiPagingParams nextPageMarker) =>
-      listViewApiCall2!(nextPageMarker).then((listViewQueryAlgoliaResponse) {
+  void listViewQueryAlgoliaPage(ApiPagingParams nextPageMarker) =>
+      listViewApiCall!(nextPageMarker).then((listViewQueryAlgoliaResponse) {
         final pageItems =
             (listViewQueryAlgoliaResponse.jsonBody ?? []).toList() as List;
         final newNumItems = nextPageMarker.numItems + pageItems.length;
-        listViewPagingController2?.appendPage(
+        listViewPagingController?.appendPage(
           pageItems,
           (pageItems.length > 0)
               ? ApiPagingParams(

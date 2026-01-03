@@ -1,8 +1,9 @@
 import '/flutter_flow/flutter_flow_util.dart';
-import 'dash_desktop_widget.dart' show DashDesktopWidget;
+import '/index.dart';
+import 'notification_widget.dart' show NotificationWidget;
 import 'package:flutter/material.dart';
 
-class DashDesktopModel extends FlutterFlowModel<DashDesktopWidget> {
+class NotificationModel extends FlutterFlowModel<NotificationWidget> {
   @override
   void initState(BuildContext context) {}
 

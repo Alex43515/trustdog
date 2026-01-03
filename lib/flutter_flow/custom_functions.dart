@@ -32,8 +32,13 @@ String buildAlgoliaFilterQuery(
   double? ageMax,
   double? priceMin,
   double? priceMax,
+  bool verified,
+  bool sponsored,
 ) {
   final List<String> queryParts = [];
+
+  // ✅ ALWAYS apply verified filter
+  queryParts.add('verified:true');
 
   void addStringFilter(String field, String? value) {
     if (value != null && value.isNotEmpty) {
@@ -41,8 +46,12 @@ String buildAlgoliaFilterQuery(
     }
   }
 
-  void addNumericFilter(String field, num? value,
-      {bool greaterOrEqual = false, bool lessOrEqual = false}) {
+  void addNumericFilter(
+    String field,
+    num? value, {
+    bool greaterOrEqual = false,
+    bool lessOrEqual = false,
+  }) {
     if (value != null) {
       if (greaterOrEqual) {
         queryParts.add('$field >= $value');
@@ -54,10 +63,19 @@ String buildAlgoliaFilterQuery(
     }
   }
 
-  // Add filters
+  void addBoolFilter(String field, bool? value) {
+    if (value != null) {
+      queryParts.add('$field:${value ? "true" : "false"}');
+    }
+  }
+
+  // Optional filters (only when user selects them)
   addStringFilter('breed', breed);
   addStringFilter('locationName', locationName);
   addStringFilter('sex', sex);
+
+  // ✅ Sponsored toggle (optional)
+  addBoolFilter('sponsored', sponsored);
 
   // Age range
   addNumericFilter('age', ageMin, greaterOrEqual: true);
@@ -81,4 +99,23 @@ int? averageRating(List<int>? ratings) {
     sum += rating;
   }
   return (sum / ratings.length).round();
+}
+
+DateTime addDaysToDate(
+  DateTime baseDate,
+  int days,
+) {
+  return baseDate.add(Duration(days: days));
+}
+
+List<DocumentReference>? reverseList(
+    List<DocumentReference>? notificationsList) {
+  if (notificationsList != null && notificationsList.length > 1) {
+    if (notificationsList[0] == notificationsList.last)
+      return notificationsList;
+
+    // reverse and return
+    return notificationsList.reversed.toList();
+  } else
+    return notificationsList;
 }

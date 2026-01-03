@@ -3,6 +3,7 @@ import '/backend/backend.dart';
 import '/backend/firebase_storage/storage.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
+import '/flutter_flow/flutter_flow_media_display.dart';
 import '/flutter_flow/flutter_flow_place_picker.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -629,17 +630,29 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                                             size: 40.0,
                                           ),
                                         ),
-                                        FlutterFlowVideoPlayer(
+                                        FlutterFlowMediaDisplay(
                                           path: _model
                                               .uploadedFileUrl_uploadDataNtwVideo,
-                                          videoType: VideoType.network,
-                                          width: 100.0,
-                                          height: 100.0,
-                                          autoPlay: false,
-                                          looping: false,
-                                          showControls: false,
-                                          allowFullScreen: false,
-                                          allowPlaybackSpeedMenu: false,
+                                          imageBuilder: (path) => ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(20.0),
+                                            child: Image.network(
+                                              path,
+                                              width: 100.0,
+                                              height: 100.0,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          videoPlayerBuilder: (path) =>
+                                              FlutterFlowVideoPlayer(
+                                            path: path,
+                                            width: 300.0,
+                                            autoPlay: false,
+                                            looping: true,
+                                            showControls: true,
+                                            allowFullScreen: true,
+                                            allowPlaybackSpeedMenu: false,
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -2161,54 +2174,67 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                     Padding(
                       padding:
                           EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Align(
-                                alignment: AlignmentDirectional(-1.0, 0.0),
-                                child: Text(
-                                  'Sponsored dogs',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyMedium
-                                      .override(
-                                        font: GoogleFonts.urbanist(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Align(
+                                  alignment: AlignmentDirectional(-1.0, 0.0),
+                                  child: Text(
+                                    'Sponsored dogs',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          font: GoogleFonts.urbanist(
+                                            fontWeight: FontWeight.w600,
+                                            fontStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyMedium
+                                                    .fontStyle,
+                                          ),
+                                          fontSize: 20.0,
+                                          letterSpacing: 0.0,
                                           fontWeight: FontWeight.w600,
                                           fontStyle:
                                               FlutterFlowTheme.of(context)
                                                   .bodyMedium
                                                   .fontStyle,
                                         ),
-                                        fontSize: 20.0,
-                                        letterSpacing: 0.0,
-                                        fontWeight: FontWeight.w600,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .fontStyle,
-                                      ),
+                                  ),
                                 ),
-                              ),
-                              Align(
-                                alignment: AlignmentDirectional(-1.0, 0.0),
-                                child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 10.0, 0.0, 0.0),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Align(
-                                        alignment:
-                                            AlignmentDirectional(-1.0, 0.0),
-                                        child: Text(
-                                          'Attach your dogs to the ad',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                font: GoogleFonts.urbanist(
+                                Align(
+                                  alignment: AlignmentDirectional(-1.0, 0.0),
+                                  child: Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 10.0, 0.0, 0.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(-1.0, 0.0),
+                                          child: Text(
+                                            'Attach your dogs to the ad',
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                                  font: GoogleFonts.urbanist(
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    fontStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMedium
+                                                            .fontStyle,
+                                                  ),
+                                                  fontSize: 14.0,
+                                                  letterSpacing: 0.0,
                                                   fontWeight: FontWeight.normal,
                                                   fontStyle:
                                                       FlutterFlowTheme.of(
@@ -2216,142 +2242,151 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                                                           .bodyMedium
                                                           .fontStyle,
                                                 ),
-                                                fontSize: 14.0,
-                                                letterSpacing: 0.0,
-                                                fontWeight: FontWeight.normal,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .fontStyle,
-                                              ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              StreamBuilder<List<DogsRecord>>(
-                                stream: queryDogsRecord(
-                                  queryBuilder: (dogsRecord) =>
-                                      dogsRecord.where(
-                                    'userAssociation',
-                                    isEqualTo: currentUserReference,
-                                  ),
-                                ),
-                                builder: (context, snapshot) {
-                                  // Customize what your widget looks like when it's loading.
-                                  if (!snapshot.hasData) {
-                                    return Center(
-                                      child: SizedBox(
-                                        width: 50.0,
-                                        height: 50.0,
-                                        child: CircularProgressIndicator(
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                            FlutterFlowTheme.of(context)
-                                                .primary,
                                           ),
                                         ),
-                                      ),
-                                    );
-                                  }
-                                  List<DogsRecord> rowDogsRecordList =
-                                      snapshot.data!;
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                StreamBuilder<List<DogsRecord>>(
+                                  stream: queryDogsRecord(
+                                    queryBuilder: (dogsRecord) =>
+                                        dogsRecord.where(
+                                      'userAssociation',
+                                      isEqualTo: currentUserReference,
+                                    ),
+                                  ),
+                                  builder: (context, snapshot) {
+                                    // Customize what your widget looks like when it's loading.
+                                    if (!snapshot.hasData) {
+                                      return Center(
+                                        child: SizedBox(
+                                          width: 50.0,
+                                          height: 50.0,
+                                          child: CircularProgressIndicator(
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                              FlutterFlowTheme.of(context)
+                                                  .primary,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                    List<DogsRecord> rowDogsRecordList =
+                                        snapshot.data!;
 
-                                  return SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: List.generate(
-                                          rowDogsRecordList.length, (rowIndex) {
-                                        final rowDogsRecord =
-                                            rowDogsRecordList[rowIndex];
-                                        return Container(
-                                          width: 100.0,
-                                          height: 150.0,
-                                          decoration: BoxDecoration(
-                                            color: FlutterFlowTheme.of(context)
-                                                .secondaryBackground,
-                                          ),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Theme(
-                                                data: ThemeData(
-                                                  checkboxTheme:
-                                                      CheckboxThemeData(
-                                                    visualDensity:
-                                                        VisualDensity.compact,
-                                                    materialTapTargetSize:
-                                                        MaterialTapTargetSize
-                                                            .shrinkWrap,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              4.0),
+                                    return SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: List.generate(
+                                            rowDogsRecordList.length,
+                                            (rowIndex) {
+                                          final rowDogsRecord =
+                                              rowDogsRecordList[rowIndex];
+                                          return Container(
+                                            width: 100.0,
+                                            height: 150.0,
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryBackground,
+                                            ),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.max,
+                                              children: [
+                                                Theme(
+                                                  data: ThemeData(
+                                                    checkboxTheme:
+                                                        CheckboxThemeData(
+                                                      visualDensity:
+                                                          VisualDensity.compact,
+                                                      materialTapTargetSize:
+                                                          MaterialTapTargetSize
+                                                              .shrinkWrap,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(4.0),
+                                                      ),
                                                     ),
+                                                    unselectedWidgetColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .accent4,
                                                   ),
-                                                  unselectedWidgetColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .accent4,
+                                                  child: Checkbox(
+                                                    value: _model
+                                                            .checkboxValueMap[
+                                                        rowDogsRecord] ??= false,
+                                                    onChanged:
+                                                        (newValue) async {
+                                                      safeSetState(() =>
+                                                          _model.checkboxValueMap[
+                                                                  rowDogsRecord] =
+                                                              newValue!);
+                                                      if (newValue!) {
+                                                        _model
+                                                            .addToSelectedDogs(
+                                                                rowDogsRecord
+                                                                    .reference);
+                                                        safeSetState(() {});
+                                                      } else {
+                                                        _model
+                                                            .removeFromSelectedDogs(
+                                                                rowDogsRecord
+                                                                    .reference);
+                                                        safeSetState(() {});
+                                                      }
+                                                    },
+                                                    side:
+                                                        (FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .accent4 !=
+                                                                null)
+                                                            ? BorderSide(
+                                                                width: 2,
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .accent4,
+                                                              )
+                                                            : null,
+                                                    activeColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .primary,
+                                                    checkColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .tertiary,
+                                                  ),
                                                 ),
-                                                child: Checkbox(
-                                                  value: _model
-                                                          .checkboxValueMap[
-                                                      rowDogsRecord] ??= false,
-                                                  onChanged: (newValue) async {
-                                                    safeSetState(() =>
-                                                        _model.checkboxValueMap[
-                                                                rowDogsRecord] =
-                                                            newValue!);
-                                                    if (newValue!) {
-                                                      _model.addToSelectedDogs(
-                                                          rowDogsRecord
-                                                              .reference);
-                                                      safeSetState(() {});
-                                                    } else {
-                                                      _model
-                                                          .removeFromSelectedDogs(
-                                                              rowDogsRecord
-                                                                  .reference);
-                                                      safeSetState(() {});
-                                                    }
-                                                  },
-                                                  side: (FlutterFlowTheme.of(
-                                                                  context)
-                                                              .accent4 !=
-                                                          null)
-                                                      ? BorderSide(
-                                                          width: 2,
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .accent4,
-                                                        )
-                                                      : null,
-                                                  activeColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .primary,
-                                                  checkColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .tertiary,
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(
-                                                        0.0, 2.0, 0.0, 5.0),
-                                                child: Text(
-                                                  rowDogsRecord.dogName,
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        font: GoogleFonts
-                                                            .urbanist(
+                                                Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          0.0, 2.0, 0.0, 5.0),
+                                                  child: Text(
+                                                    rowDogsRecord.dogName,
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .bodyMedium
+                                                        .override(
+                                                          font: GoogleFonts
+                                                              .urbanist(
+                                                            fontWeight:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .fontWeight,
+                                                            fontStyle:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMedium
+                                                                    .fontStyle,
+                                                          ),
+                                                          letterSpacing: 0.0,
                                                           fontWeight:
                                                               FlutterFlowTheme.of(
                                                                       context)
@@ -2363,42 +2398,32 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                                                                   .bodyMedium
                                                                   .fontStyle,
                                                         ),
-                                                        letterSpacing: 0.0,
-                                                        fontWeight:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMedium
-                                                                .fontWeight,
-                                                        fontStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMedium
-                                                                .fontStyle,
-                                                      ),
+                                                  ),
                                                 ),
-                                              ),
-                                              ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
-                                                child: Image.network(
-                                                  rowDogsRecord
-                                                      .postImages.firstOrNull!,
-                                                  width: 80.0,
-                                                  height: 80.0,
-                                                  fit: BoxFit.cover,
+                                                ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          8.0),
+                                                  child: Image.network(
+                                                    rowDogsRecord.postImages
+                                                        .firstOrNull!,
+                                                    width: 80.0,
+                                                    height: 80.0,
+                                                    fit: BoxFit.cover,
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      }),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
+                                              ],
+                                            ),
+                                          );
+                                        }),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     Padding(
@@ -2517,22 +2542,9 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                               }
                             }
 
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  'Creating your post',
-                                  style: TextStyle(
-                                    color:
-                                        FlutterFlowTheme.of(context).tertiary,
-                                  ),
-                                ),
-                                duration: Duration(milliseconds: 4000),
-                                backgroundColor:
-                                    FlutterFlowTheme.of(context).primary,
-                              ),
-                            );
-
-                            await UserPostsRecord.collection.doc().set({
+                            var userPostsRecordReference1 =
+                                UserPostsRecord.collection.doc();
+                            await userPostsRecordReference1.set({
                               ...createUserPostsRecordData(
                                 postPhoto: _model.uploadedFileUrl_uploadDataNtw,
                                 postDescription:
@@ -2554,6 +2566,7 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                                     _model.uploadedFileUrl_uploadDataDcl,
                                 postVideo:
                                     _model.uploadedFileUrl_uploadDataNtwVideo,
+                                pending: true,
                               ),
                               ...mapToFirestore(
                                 {
@@ -2561,20 +2574,8 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                                 },
                               ),
                             });
-
-                            context.pushNamed(
-                              HomePageWidget.routeName,
-                              extra: <String, dynamic>{
-                                kTransitionInfoKey: TransitionInfo(
-                                  hasTransition: true,
-                                  transitionType:
-                                      PageTransitionType.leftToRight,
-                                  duration: Duration(milliseconds: 250),
-                                ),
-                              },
-                            );
-                          } else {
-                            await UserPostsRecord.collection.doc().set({
+                            _model.userPosts2 =
+                                UserPostsRecord.getDocumentFromData({
                               ...createUserPostsRecordData(
                                 postPhoto: _model.uploadedFileUrl_uploadDataNtw,
                                 postDescription:
@@ -2592,6 +2593,62 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                                 price: int.tryParse(
                                     _model.priceTextController.text),
                                 sex: _model.dropDownValue2,
+                                videoThumbnail:
+                                    _model.uploadedFileUrl_uploadDataDcl,
+                                postVideo:
+                                    _model.uploadedFileUrl_uploadDataNtwVideo,
+                                pending: true,
+                              ),
+                              ...mapToFirestore(
+                                {
+                                  'dogProfiles': _model.selectedDogs,
+                                },
+                              ),
+                            }, userPostsRecordReference1);
+
+                            context.pushNamed(
+                              PageBoostWidget.routeName,
+                              queryParameters: {
+                                'userRef': serializeParam(
+                                  currentUserReference,
+                                  ParamType.DocumentReference,
+                                ),
+                                'userPostsRef': serializeParam(
+                                  _model.userPosts2?.reference,
+                                  ParamType.DocumentReference,
+                                ),
+                              }.withoutNulls,
+                              extra: <String, dynamic>{
+                                kTransitionInfoKey: TransitionInfo(
+                                  hasTransition: true,
+                                  transitionType:
+                                      PageTransitionType.leftToRight,
+                                  duration: Duration(milliseconds: 250),
+                                ),
+                              },
+                            );
+                          } else {
+                            var userPostsRecordReference2 =
+                                UserPostsRecord.collection.doc();
+                            await userPostsRecordReference2.set({
+                              ...createUserPostsRecordData(
+                                postPhoto: _model.uploadedFileUrl_uploadDataNtw,
+                                postDescription:
+                                    _model.descriptionTextController.text,
+                                postUser: currentUserReference,
+                                postTitle: _model.titleTextController.text,
+                                timePosted: getCurrentTimestamp,
+                                postOwner: true,
+                                breed: _model.dropDownValue1,
+                                location: _model.placePickerValue.latLng,
+                                locationName: _model.placePickerValue.city,
+                                currency: _model.currencyValue,
+                                age:
+                                    int.tryParse(_model.ageTextController.text),
+                                price: int.tryParse(
+                                    _model.priceTextController.text),
+                                sex: _model.dropDownValue2,
+                                pending: true,
                               ),
                               ...mapToFirestore(
                                 {
@@ -2599,9 +2656,46 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                                 },
                               ),
                             });
+                            _model.userPosts =
+                                UserPostsRecord.getDocumentFromData({
+                              ...createUserPostsRecordData(
+                                postPhoto: _model.uploadedFileUrl_uploadDataNtw,
+                                postDescription:
+                                    _model.descriptionTextController.text,
+                                postUser: currentUserReference,
+                                postTitle: _model.titleTextController.text,
+                                timePosted: getCurrentTimestamp,
+                                postOwner: true,
+                                breed: _model.dropDownValue1,
+                                location: _model.placePickerValue.latLng,
+                                locationName: _model.placePickerValue.city,
+                                currency: _model.currencyValue,
+                                age:
+                                    int.tryParse(_model.ageTextController.text),
+                                price: int.tryParse(
+                                    _model.priceTextController.text),
+                                sex: _model.dropDownValue2,
+                                pending: true,
+                              ),
+                              ...mapToFirestore(
+                                {
+                                  'dogProfiles': _model.selectedDogs,
+                                },
+                              ),
+                            }, userPostsRecordReference2);
 
                             context.pushNamed(
-                              HomePageWidget.routeName,
+                              PageBoostWidget.routeName,
+                              queryParameters: {
+                                'userRef': serializeParam(
+                                  currentUserReference,
+                                  ParamType.DocumentReference,
+                                ),
+                                'userPostsRef': serializeParam(
+                                  _model.userPosts?.reference,
+                                  ParamType.DocumentReference,
+                                ),
+                              }.withoutNulls,
                               extra: <String, dynamic>{
                                 kTransitionInfoKey: TransitionInfo(
                                   hasTransition: true,
@@ -2612,6 +2706,8 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                               },
                             );
                           }
+
+                          safeSetState(() {});
                         },
                         text: 'Post Listing',
                         options: FFButtonOptions(

@@ -10,35 +10,35 @@ import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'dog_verification_details_model.dart';
-export 'dog_verification_details_model.dart';
+import 'post_verification_details_model.dart';
+export 'post_verification_details_model.dart';
 
-class DogVerificationDetailsWidget extends StatefulWidget {
-  const DogVerificationDetailsWidget({
+class PostVerificationDetailsWidget extends StatefulWidget {
+  const PostVerificationDetailsWidget({
     super.key,
-    required this.dogDetails,
+    required this.postDetails,
   });
 
-  final DocumentReference? dogDetails;
+  final DocumentReference? postDetails;
 
-  static String routeName = 'dogVerificationDetails';
-  static String routePath = '/dogVerificationDetails';
+  static String routeName = 'postVerificationDetails';
+  static String routePath = '/postVerificationDetails';
 
   @override
-  State<DogVerificationDetailsWidget> createState() =>
-      _DogVerificationDetailsWidgetState();
+  State<PostVerificationDetailsWidget> createState() =>
+      _PostVerificationDetailsWidgetState();
 }
 
-class _DogVerificationDetailsWidgetState
-    extends State<DogVerificationDetailsWidget> {
-  late DogVerificationDetailsModel _model;
+class _PostVerificationDetailsWidgetState
+    extends State<PostVerificationDetailsWidget> {
+  late PostVerificationDetailsModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => DogVerificationDetailsModel());
+    _model = createModel(context, () => PostVerificationDetailsModel());
 
     _model.textController ??=
         TextEditingController(text: 'Write reason for rejection here');
@@ -54,8 +54,8 @@ class _DogVerificationDetailsWidgetState
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<DogsRecord>(
-      stream: DogsRecord.getDocument(widget.dogDetails!),
+    return StreamBuilder<UserPostsRecord>(
+      stream: UserPostsRecord.getDocument(widget.postDetails!),
       builder: (context, snapshot) {
         // Customize what your widget looks like when it's loading.
         if (!snapshot.hasData) {
@@ -75,7 +75,7 @@ class _DogVerificationDetailsWidgetState
           );
         }
 
-        final dogVerificationDetailsDogsRecord = snapshot.data!;
+        final postVerificationDetailsUserPostsRecord = snapshot.data!;
 
         return GestureDetector(
           onTap: () {
@@ -129,7 +129,7 @@ class _DogVerificationDetailsWidgetState
             ),
             body: StreamBuilder<UsersRecord>(
               stream: UsersRecord.getDocument(
-                  dogVerificationDetailsDogsRecord.userAssociation!),
+                  postVerificationDetailsUserPostsRecord.postUser!),
               builder: (context, snapshot) {
                 // Customize what your widget looks like when it's loading.
                 if (!snapshot.hasData) {
@@ -188,11 +188,10 @@ class _DogVerificationDetailsWidgetState
                                 highlightColor: Colors.transparent,
                                 onTap: () async {
                                   context.pushNamed(
-                                    DegDetailsWidget.routeName,
+                                    PostDetailsWidget.routeName,
                                     queryParameters: {
-                                      'dogDetails': serializeParam(
-                                        dogVerificationDetailsDogsRecord
-                                            .reference,
+                                      'postReference': serializeParam(
+                                        widget.postDetails,
                                         ParamType.DocumentReference,
                                       ),
                                       'userRecord': serializeParam(
@@ -213,8 +212,8 @@ class _DogVerificationDetailsWidgetState
                                     shape: BoxShape.circle,
                                   ),
                                   child: Image.network(
-                                    dogVerificationDetailsDogsRecord
-                                        .postImages.firstOrNull!,
+                                    postVerificationDetailsUserPostsRecord
+                                        .postPhoto,
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -231,7 +230,8 @@ class _DogVerificationDetailsWidgetState
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         0.0, 0.0, 10.0, 0.0),
                                     child: Text(
-                                      dogVerificationDetailsDogsRecord.dogName,
+                                      postVerificationDetailsUserPostsRecord
+                                          .postTitle,
                                       style: FlutterFlowTheme.of(context)
                                           .bodyMedium
                                           .override(
@@ -291,9 +291,10 @@ class _DogVerificationDetailsWidgetState
                                               ),
                                         ),
                                         TextSpan(
-                                          text: dogVerificationDetailsDogsRecord
-                                              .pending
-                                              .toString(),
+                                          text:
+                                              postVerificationDetailsUserPostsRecord
+                                                  .pending
+                                                  .toString(),
                                           style: FlutterFlowTheme.of(context)
                                               .bodyMedium
                                               .override(
@@ -360,104 +361,8 @@ class _DogVerificationDetailsWidgetState
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         0.0, 0.0, 10.0, 0.0),
                                     child: Text(
-                                      dogVerificationDetailsDogsRecord.dogType,
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            font: GoogleFonts.urbanist(
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMedium
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMedium
-                                                      .fontStyle,
-                                            ),
-                                            letterSpacing: 0.0,
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyMedium
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyMedium
-                                                    .fontStyle,
-                                          ),
-                                    ),
-                                  ),
-                                  RichText(
-                                    textScaler:
-                                        MediaQuery.of(context).textScaler,
-                                    text: TextSpan(
-                                      children: [
-                                        TextSpan(
-                                          text: dogVerificationDetailsDogsRecord
-                                              .dogAge,
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                font: GoogleFonts.urbanist(
-                                                  fontWeight:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodyMedium
-                                                          .fontWeight,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodyMedium
-                                                          .fontStyle,
-                                                ),
-                                                letterSpacing: 0.0,
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .fontStyle,
-                                              ),
-                                        ),
-                                        TextSpan(
-                                          text: ' ',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                font: GoogleFonts.urbanist(
-                                                  fontWeight:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodyMedium
-                                                          .fontWeight,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodyMedium
-                                                          .fontStyle,
-                                                ),
-                                                letterSpacing: 0.0,
-                                                fontWeight:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .fontWeight,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .fontStyle,
-                                              ),
-                                        ),
-                                        TextSpan(
-                                          text: dogVerificationDetailsDogsRecord
-                                              .yearsMonths,
-                                          style: TextStyle(),
-                                        ),
-                                        TextSpan(
-                                          text: ' old',
-                                          style: TextStyle(),
-                                        )
-                                      ],
+                                      postVerificationDetailsUserPostsRecord
+                                          .postDescription,
                                       style: FlutterFlowTheme.of(context)
                                           .bodyMedium
                                           .override(
@@ -525,6 +430,13 @@ class _DogVerificationDetailsWidgetState
                                                         .bodyMedium
                                                         .fontStyle,
                                               ),
+                                        ),
+                                        TextSpan(
+                                          text: dateTimeFormat(
+                                              "relative",
+                                              postVerificationDetailsUserPostsRecord
+                                                  .timePosted!),
+                                          style: TextStyle(),
                                         )
                                       ],
                                       style: FlutterFlowTheme.of(context)
@@ -853,489 +765,16 @@ class _DogVerificationDetailsWidgetState
                       ),
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(
-                            0.0, 20.0, 0.0, 50.0),
-                        child: Container(
-                          width: MediaQuery.sizeOf(context).width * 1.0,
-                          height: 850.0,
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                            boxShadow: [
-                              BoxShadow(
-                                blurRadius: 4.0,
-                                color: Color(0x33000000),
-                                offset: Offset(
-                                  0.0,
-                                  2.0,
-                                ),
-                              )
-                            ],
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(20.0),
-                              bottomRight: Radius.circular(20.0),
-                              topLeft: Radius.circular(20.0),
-                              topRight: Radius.circular(20.0),
-                            ),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.all(20.0),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Text(
-                                        'Document Infomration',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              font: GoogleFonts.urbanist(
-                                                fontWeight: FontWeight.bold,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .fontStyle,
-                                              ),
-                                              fontSize: 20.0,
-                                              letterSpacing: 0.0,
-                                              fontWeight: FontWeight.bold,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMedium
-                                                      .fontStyle,
-                                            ),
-                                      ),
-                                    ],
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 30.0, 0.0, 0.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'Passport',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                font: GoogleFonts.urbanist(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodyMedium
-                                                          .fontStyle,
-                                                ),
-                                                fontSize: 16.0,
-                                                letterSpacing: 0.0,
-                                                fontWeight: FontWeight.w500,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .fontStyle,
-                                              ),
-                                        ),
-                                        Builder(
-                                          builder: (context) {
-                                            final sisajga =
-                                                dogVerificationDetailsDogsRecord
-                                                    .passport
-                                                    .toList();
-
-                                            return Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              children:
-                                                  List.generate(sisajga.length,
-                                                      (sisajgaIndex) {
-                                                final sisajgaItem =
-                                                    sisajga[sisajgaIndex];
-                                                return FFButtonWidget(
-                                                  onPressed: () async {
-                                                    await downloadFile(
-                                                      filename: 'passport',
-                                                      url: sisajgaItem,
-                                                    );
-                                                  },
-                                                  text: 'View Docs',
-                                                  options: FFButtonOptions(
-                                                    width: 100.0,
-                                                    height: 30.0,
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(16.0, 0.0,
-                                                                16.0, 0.0),
-                                                    iconPadding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(0.0, 0.0,
-                                                                0.0, 0.0),
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .primary,
-                                                    textStyle: FlutterFlowTheme
-                                                            .of(context)
-                                                        .titleSmall
-                                                        .override(
-                                                          font: GoogleFonts
-                                                              .urbanist(
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .titleSmall
-                                                                    .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .titleSmall
-                                                                    .fontStyle,
-                                                          ),
-                                                          color: Colors.white,
-                                                          fontSize: 12.0,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleSmall
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleSmall
-                                                                  .fontStyle,
-                                                        ),
-                                                    elevation: 0.0,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20.0),
-                                                  ),
-                                                );
-                                              }).divide(SizedBox(height: 5.0)),
-                                            );
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 30.0, 0.0, 0.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'MicroChip',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                font: GoogleFonts.urbanist(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodyMedium
-                                                          .fontStyle,
-                                                ),
-                                                fontSize: 16.0,
-                                                letterSpacing: 0.0,
-                                                fontWeight: FontWeight.w500,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .fontStyle,
-                                              ),
-                                        ),
-                                        Builder(
-                                          builder: (context) {
-                                            final microChip =
-                                                dogVerificationDetailsDogsRecord
-                                                    .microChip
-                                                    .toList();
-
-                                            return Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: List.generate(
-                                                  microChip.length,
-                                                  (microChipIndex) {
-                                                final microChipItem =
-                                                    microChip[microChipIndex];
-                                                return FFButtonWidget(
-                                                  onPressed: () async {
-                                                    await downloadFile(
-                                                      filename: 'microChip',
-                                                      url: microChipItem,
-                                                    );
-                                                  },
-                                                  text: 'View Docs',
-                                                  options: FFButtonOptions(
-                                                    width: 100.0,
-                                                    height: 30.0,
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(16.0, 0.0,
-                                                                16.0, 0.0),
-                                                    iconPadding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(0.0, 0.0,
-                                                                0.0, 0.0),
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .primary,
-                                                    textStyle: FlutterFlowTheme
-                                                            .of(context)
-                                                        .titleSmall
-                                                        .override(
-                                                          font: GoogleFonts
-                                                              .urbanist(
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .titleSmall
-                                                                    .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .titleSmall
-                                                                    .fontStyle,
-                                                          ),
-                                                          color: Colors.white,
-                                                          fontSize: 12.0,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleSmall
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleSmall
-                                                                  .fontStyle,
-                                                        ),
-                                                    elevation: 0.0,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20.0),
-                                                  ),
-                                                );
-                                              }).divide(SizedBox(height: 5.0)),
-                                            );
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 30.0, 0.0, 0.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'MicroChip',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                font: GoogleFonts.urbanist(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodyMedium
-                                                          .fontStyle,
-                                                ),
-                                                fontSize: 16.0,
-                                                letterSpacing: 0.0,
-                                                fontWeight: FontWeight.w500,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .fontStyle,
-                                              ),
-                                        ),
-                                        Builder(
-                                          builder: (context) {
-                                            final pedigree =
-                                                dogVerificationDetailsDogsRecord
-                                                    .pedigree
-                                                    .toList();
-
-                                            return Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              children:
-                                                  List.generate(pedigree.length,
-                                                      (pedigreeIndex) {
-                                                final pedigreeItem =
-                                                    pedigree[pedigreeIndex];
-                                                return FFButtonWidget(
-                                                  onPressed: () async {
-                                                    await downloadFile(
-                                                      filename: 'pedigree',
-                                                      url: pedigreeItem,
-                                                    );
-                                                  },
-                                                  text: 'View Docs',
-                                                  options: FFButtonOptions(
-                                                    width: 100.0,
-                                                    height: 30.0,
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(16.0, 0.0,
-                                                                16.0, 0.0),
-                                                    iconPadding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(0.0, 0.0,
-                                                                0.0, 0.0),
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .primary,
-                                                    textStyle: FlutterFlowTheme
-                                                            .of(context)
-                                                        .titleSmall
-                                                        .override(
-                                                          font: GoogleFonts
-                                                              .urbanist(
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .titleSmall
-                                                                    .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .titleSmall
-                                                                    .fontStyle,
-                                                          ),
-                                                          color: Colors.white,
-                                                          fontSize: 12.0,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleSmall
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleSmall
-                                                                  .fontStyle,
-                                                        ),
-                                                    elevation: 0.0,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20.0),
-                                                  ),
-                                                );
-                                              }).divide(SizedBox(height: 5.0)),
-                                            );
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 20.0, 0.0, 0.0),
-                                    child: Text(
-                                      'Images Owner and Dog',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            font: GoogleFonts.urbanist(
-                                              fontWeight: FontWeight.w600,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMedium
-                                                      .fontStyle,
-                                            ),
-                                            fontSize: 20.0,
-                                            letterSpacing: 0.0,
-                                            fontWeight: FontWeight.w600,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyMedium
-                                                    .fontStyle,
-                                          ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 30.0, 0.0, 0.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Expanded(
-                                          child: Builder(
-                                            builder: (context) {
-                                              final ownerImages =
-                                                  dogVerificationDetailsDogsRecord
-                                                      .ownerImages
-                                                      .toList();
-
-                                              return GridView.builder(
-                                                padding: EdgeInsets.zero,
-                                                gridDelegate:
-                                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                                  crossAxisCount: 3,
-                                                  crossAxisSpacing: 10.0,
-                                                  mainAxisSpacing: 10.0,
-                                                  childAspectRatio: 1.0,
-                                                ),
-                                                shrinkWrap: true,
-                                                scrollDirection: Axis.vertical,
-                                                itemCount: ownerImages.length,
-                                                itemBuilder: (context,
-                                                    ownerImagesIndex) {
-                                                  final ownerImagesItem =
-                                                      ownerImages[
-                                                          ownerImagesIndex];
-                                                  return ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8.0),
-                                                    child: Image.network(
-                                                      valueOrDefault<String>(
-                                                        ownerImagesItem,
-                                                        'https://picsum.photos/seed/747/600',
-                                                      ),
-                                                      width: 200.0,
-                                                      height: 200.0,
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  );
-                                                },
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 50.0),
+                            0.0, 50.0, 0.0, 50.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             FFButtonWidget(
                               onPressed: () async {
-                                await dogVerificationDetailsDogsRecord.reference
-                                    .update(createDogsRecordData(
+                                await postVerificationDetailsUserPostsRecord
+                                    .reference
+                                    .update(createUserPostsRecordData(
                                   verified: true,
                                   pending: false,
                                 ));
@@ -1350,20 +789,20 @@ class _DogVerificationDetailsWidgetState
                                 await notificationsRecordReference
                                     .set(createNotificationsRecordData(
                                   userID: currentUserReference,
-                                  time: getCurrentTimestamp,
-                                  notificationType: 'Approved-Dog',
-                                  postIDDogs: dogVerificationDetailsDogsRecord
+                                  postID: postVerificationDetailsUserPostsRecord
                                       .reference,
+                                  time: getCurrentTimestamp,
+                                  notificationType: 'Approve-Post',
                                 ));
-                                _model.postNot5 =
+                                _model.postNot3 =
                                     NotificationsRecord.getDocumentFromData(
                                         createNotificationsRecordData(
                                           userID: currentUserReference,
-                                          time: getCurrentTimestamp,
-                                          notificationType: 'Approved-Dog',
-                                          postIDDogs:
-                                              dogVerificationDetailsDogsRecord
+                                          postID:
+                                              postVerificationDetailsUserPostsRecord
                                                   .reference,
+                                          time: getCurrentTimestamp,
+                                          notificationType: 'Approve-Post',
                                         ),
                                         notificationsRecordReference);
 
@@ -1375,25 +814,26 @@ class _DogVerificationDetailsWidgetState
                                     {
                                       'unreadNotifications':
                                           FieldValue.arrayUnion(
-                                              [_model.postNot5?.reference]),
+                                              [_model.postNot3?.reference]),
                                     },
                                   ),
                                 });
                                 triggerPushNotification(
                                   notificationTitle:
-                                      'Your dog is approved ! Congrats !',
+                                      'Your listing is approved ! Congrats !',
                                   notificationText:
-                                      'The dog has been approved keep doing a good job !',
+                                      'The listing has been approved keep doing a good job !',
                                   notificationImageUrl:
-                                      dogVerificationDetailsDogsRecord
-                                          .postImages.firstOrNull,
+                                      postVerificationDetailsUserPostsRecord
+                                          .postPhoto,
                                   notificationSound: 'default',
                                   userRefs: [columnUsersRecord.reference],
-                                  initialPageName: 'underReviewDogs',
+                                  initialPageName: 'underReviewPosts',
                                   parameterData: {},
                                 );
 
-                                context.pushNamed(DashmobileWidget.routeName);
+                                context.pushNamed(
+                                    PostVerificationWidget.routeName);
 
                                 safeSetState(() {});
                               },
@@ -1432,13 +872,14 @@ class _DogVerificationDetailsWidgetState
                             ),
                             FFButtonWidget(
                               onPressed: () async {
-                                await dogVerificationDetailsDogsRecord.reference
-                                    .update(createDogsRecordData(
-                                  rejectReason: _model.textController.text,
+                                await postVerificationDetailsUserPostsRecord
+                                    .reference
+                                    .update(createUserPostsRecordData(
+                                  rejectionReason: _model.textController.text,
                                 ));
 
-                                await widget.dogDetails!
-                                    .update(createDogsRecordData(
+                                await widget.postDetails!
+                                    .update(createUserPostsRecordData(
                                   rejected: true,
                                   pending: false,
                                 ));
@@ -1448,20 +889,20 @@ class _DogVerificationDetailsWidgetState
                                 await notificationsRecordReference
                                     .set(createNotificationsRecordData(
                                   userID: currentUserReference,
-                                  time: getCurrentTimestamp,
-                                  notificationType: 'Rejected-Dog',
-                                  postIDDogs: dogVerificationDetailsDogsRecord
+                                  postID: postVerificationDetailsUserPostsRecord
                                       .reference,
+                                  time: getCurrentTimestamp,
+                                  notificationType: 'Reject-Post',
                                 ));
-                                _model.postNot6 =
+                                _model.postNot4 =
                                     NotificationsRecord.getDocumentFromData(
                                         createNotificationsRecordData(
                                           userID: currentUserReference,
-                                          time: getCurrentTimestamp,
-                                          notificationType: 'Rejected-Dog',
-                                          postIDDogs:
-                                              dogVerificationDetailsDogsRecord
+                                          postID:
+                                              postVerificationDetailsUserPostsRecord
                                                   .reference,
+                                          time: getCurrentTimestamp,
+                                          notificationType: 'Reject-Post',
                                         ),
                                         notificationsRecordReference);
 
@@ -1473,25 +914,26 @@ class _DogVerificationDetailsWidgetState
                                     {
                                       'unreadNotifications':
                                           FieldValue.arrayUnion(
-                                              [_model.postNot6?.reference]),
+                                              [_model.postNot4?.reference]),
                                     },
                                   ),
                                 });
                                 triggerPushNotification(
                                   notificationTitle:
-                                      'Your dog has been rejected ! Please review the comments and try again !',
+                                      'Your listing has been rejected ! Please review the comments and try again !',
                                   notificationText:
-                                      'The dog has been rejected please review the comments and fix the missing fields',
+                                      'The listing has been rejected please review the comments and fix the missing fields',
                                   notificationImageUrl:
-                                      dogVerificationDetailsDogsRecord
-                                          .postImages.firstOrNull,
+                                      postVerificationDetailsUserPostsRecord
+                                          .postPhoto,
                                   notificationSound: 'default',
                                   userRefs: [columnUsersRecord.reference],
                                   initialPageName: 'underReviewPosts',
                                   parameterData: {},
                                 );
 
-                                context.pushNamed(DashmobileWidget.routeName);
+                                context.pushNamed(
+                                    PostVerificationWidget.routeName);
 
                                 safeSetState(() {});
                               },

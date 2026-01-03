@@ -1,19 +1,20 @@
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
-import 'dog_verification_details_widget.dart' show DogVerificationDetailsWidget;
+import 'post_verification_details_widget.dart'
+    show PostVerificationDetailsWidget;
 import 'package:flutter/material.dart';
 
-class DogVerificationDetailsModel
-    extends FlutterFlowModel<DogVerificationDetailsWidget> {
+class PostVerificationDetailsModel
+    extends FlutterFlowModel<PostVerificationDetailsWidget> {
   ///  State fields for stateful widgets in this page.
 
   // State field(s) for RatingBar widget.
   double? ratingBarValue;
   // Stores action output result for [Backend Call - Create Document] action in Button widget.
-  NotificationsRecord? postNot5;
+  NotificationsRecord? postNot3;
   // Stores action output result for [Backend Call - Create Document] action in Button widget.
-  NotificationsRecord? postNot6;
+  NotificationsRecord? postNot4;
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode;
   TextEditingController? textController;

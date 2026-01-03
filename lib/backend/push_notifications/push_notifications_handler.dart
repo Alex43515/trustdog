@@ -121,7 +121,6 @@ final parametersBuilderMap =
   'createYourProfile': ParameterData.none(),
   'forgotPassword': ParameterData.none(),
   'homePage': ParameterData.none(),
-  'createStory': ParameterData.none(),
   'createPost': ParameterData.none(),
   'postDetails': (data) async => ParameterData(
         allParams: {
@@ -129,11 +128,6 @@ final parametersBuilderMap =
               getParameter<DocumentReference>(data, 'postReference'),
           'userRecord': await getDocumentParameter<UsersRecord>(
               data, 'userRecord', UsersRecord.fromSnapshot),
-        },
-      ),
-  'storyDetails': (data) async => ParameterData(
-        allParams: {
-          'initialStoryIndex': getParameter<int>(data, 'initialStoryIndex'),
         },
       ),
   'editSettings': ParameterData.none(),
@@ -169,7 +163,6 @@ final parametersBuilderMap =
         },
       ),
   'profilepage2': ParameterData.none(),
-  'test': ParameterData.none(),
   'DogMap': ParameterData.none(),
   'dogProfile_Update': (data) async => ParameterData(
         allParams: {
@@ -177,7 +170,6 @@ final parametersBuilderMap =
               data, 'dogUser', DogsRecord.fromSnapshot),
         },
       ),
-  'dashDesktop': ParameterData.none(),
   'dashmobile': ParameterData.none(),
   'verification': (data) async => ParameterData(
         allParams: {
@@ -195,6 +187,20 @@ final parametersBuilderMap =
         },
       ),
   'underReviewDogs': ParameterData.none(),
+  'pageBoost': (data) async => ParameterData(
+        allParams: {
+          'userRef': getParameter<DocumentReference>(data, 'userRef'),
+          'userPostsRef': getParameter<DocumentReference>(data, 'userPostsRef'),
+        },
+      ),
+  'postVerification': ParameterData.none(),
+  'postVerificationDetails': (data) async => ParameterData(
+        allParams: {
+          'postDetails': getParameter<DocumentReference>(data, 'postDetails'),
+        },
+      ),
+  'underReviewPosts': ParameterData.none(),
+  'Notification': ParameterData.none(),
 };
 
 Map<String, dynamic> getInitialParameterData(Map<String, dynamic> data) {

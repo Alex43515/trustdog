@@ -4,30 +4,31 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/form_field_controller.dart';
 import '/index.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'dashmobile_model.dart';
-export 'dashmobile_model.dart';
+import 'post_verification_model.dart';
+export 'post_verification_model.dart';
 
-class DashmobileWidget extends StatefulWidget {
-  const DashmobileWidget({super.key});
+class PostVerificationWidget extends StatefulWidget {
+  const PostVerificationWidget({super.key});
 
-  static String routeName = 'dashmobile';
-  static String routePath = '/dashmobile';
+  static String routeName = 'postVerification';
+  static String routePath = '/postVerification';
 
   @override
-  State<DashmobileWidget> createState() => _DashmobileWidgetState();
+  State<PostVerificationWidget> createState() => _PostVerificationWidgetState();
 }
 
-class _DashmobileWidgetState extends State<DashmobileWidget> {
-  late DashmobileModel _model;
+class _PostVerificationWidgetState extends State<PostVerificationWidget> {
+  late PostVerificationModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => DashmobileModel());
+    _model = createModel(context, () => PostVerificationModel());
   }
 
   @override
@@ -201,12 +202,14 @@ class _DashmobileWidgetState extends State<DashmobileWidget> {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       if (_model.category == 'Pending')
-                        StreamBuilder<List<DogsRecord>>(
-                          stream: queryDogsRecord(
-                            queryBuilder: (dogsRecord) => dogsRecord.where(
-                              'pending',
-                              isEqualTo: true,
-                            ),
+                        StreamBuilder<List<UserPostsRecord>>(
+                          stream: queryUserPostsRecord(
+                            queryBuilder: (userPostsRecord) => userPostsRecord
+                                .where(
+                                  'pending',
+                                  isEqualTo: true,
+                                )
+                                .orderBy('timePosted', descending: true),
                           ),
                           builder: (context, snapshot) {
                             // Customize what your widget looks like when it's loading.
@@ -223,22 +226,22 @@ class _DashmobileWidgetState extends State<DashmobileWidget> {
                                 ),
                               );
                             }
-                            List<DogsRecord> pendingDogsRecordList =
+                            List<UserPostsRecord> pendingUserPostsRecordList =
                                 snapshot.data!;
 
                             return ListView.builder(
                               padding: EdgeInsets.zero,
                               shrinkWrap: true,
                               scrollDirection: Axis.vertical,
-                              itemCount: pendingDogsRecordList.length,
+                              itemCount: pendingUserPostsRecordList.length,
                               itemBuilder: (context, pendingIndex) {
-                                final pendingDogsRecord =
-                                    pendingDogsRecordList[pendingIndex];
+                                final pendingUserPostsRecord =
+                                    pendingUserPostsRecordList[pendingIndex];
                                 return Padding(
                                   padding: EdgeInsets.all(16.0),
                                   child: StreamBuilder<UsersRecord>(
                                     stream: UsersRecord.getDocument(
-                                        pendingDogsRecord.userAssociation!),
+                                        pendingUserPostsRecord.postUser!),
                                     builder: (context, snapshot) {
                                       // Customize what your widget looks like when it's loading.
                                       if (!snapshot.hasData) {
@@ -267,11 +270,12 @@ class _DashmobileWidgetState extends State<DashmobileWidget> {
                                         highlightColor: Colors.transparent,
                                         onTap: () async {
                                           context.pushNamed(
-                                            DogVerificationDetailsWidget
+                                            PostVerificationDetailsWidget
                                                 .routeName,
                                             queryParameters: {
-                                              'dogDetails': serializeParam(
-                                                pendingDogsRecord.reference,
+                                              'postDetails': serializeParam(
+                                                pendingUserPostsRecord
+                                                    .reference,
                                                 ParamType.DocumentReference,
                                               ),
                                             }.withoutNulls,
@@ -309,9 +313,14 @@ class _DashmobileWidgetState extends State<DashmobileWidget> {
                                                   decoration: BoxDecoration(
                                                     shape: BoxShape.circle,
                                                   ),
-                                                  child: Image.network(
-                                                    pendingDogsRecord.postImages
-                                                        .firstOrNull!,
+                                                  child: CachedNetworkImage(
+                                                    fadeInDuration: Duration(
+                                                        milliseconds: 0),
+                                                    fadeOutDuration: Duration(
+                                                        milliseconds: 0),
+                                                    imageUrl:
+                                                        pendingUserPostsRecord
+                                                            .postPhoto,
                                                     fit: BoxFit.cover,
                                                   ),
                                                 ),
@@ -327,8 +336,8 @@ class _DashmobileWidgetState extends State<DashmobileWidget> {
                                                             .start,
                                                     children: [
                                                       Text(
-                                                        pendingDogsRecord
-                                                            .dogName,
+                                                        pendingUserPostsRecord
+                                                            .postTitle,
                                                         style:
                                                             FlutterFlowTheme.of(
                                                                     context)
@@ -361,6 +370,8 @@ class _DashmobileWidgetState extends State<DashmobileWidget> {
                                                                       .bodyMedium
                                                                       .fontStyle,
                                                                 ),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                       ),
                                                       RichText(
                                                         textScaler:
@@ -504,7 +515,10 @@ class _DashmobileWidgetState extends State<DashmobileWidget> {
                                                                   ),
                                                             ),
                                                             TextSpan(
-                                                              text: '',
+                                                              text: dateTimeFormat(
+                                                                  "relative",
+                                                                  pendingUserPostsRecord
+                                                                      .timePosted!),
                                                               style: FlutterFlowTheme
                                                                       .of(context)
                                                                   .bodyMedium
@@ -667,12 +681,14 @@ class _DashmobileWidgetState extends State<DashmobileWidget> {
                           },
                         ),
                       if (_model.category == 'Verified')
-                        StreamBuilder<List<DogsRecord>>(
-                          stream: queryDogsRecord(
-                            queryBuilder: (dogsRecord) => dogsRecord.where(
-                              'verified',
-                              isEqualTo: true,
-                            ),
+                        StreamBuilder<List<UserPostsRecord>>(
+                          stream: queryUserPostsRecord(
+                            queryBuilder: (userPostsRecord) => userPostsRecord
+                                .where(
+                                  'verified',
+                                  isEqualTo: true,
+                                )
+                                .orderBy('timePosted', descending: true),
                           ),
                           builder: (context, snapshot) {
                             // Customize what your widget looks like when it's loading.
@@ -689,22 +705,22 @@ class _DashmobileWidgetState extends State<DashmobileWidget> {
                                 ),
                               );
                             }
-                            List<DogsRecord> verifiedDogsRecordList =
+                            List<UserPostsRecord> verifiedUserPostsRecordList =
                                 snapshot.data!;
 
                             return ListView.builder(
                               padding: EdgeInsets.zero,
                               shrinkWrap: true,
                               scrollDirection: Axis.vertical,
-                              itemCount: verifiedDogsRecordList.length,
+                              itemCount: verifiedUserPostsRecordList.length,
                               itemBuilder: (context, verifiedIndex) {
-                                final verifiedDogsRecord =
-                                    verifiedDogsRecordList[verifiedIndex];
+                                final verifiedUserPostsRecord =
+                                    verifiedUserPostsRecordList[verifiedIndex];
                                 return Padding(
                                   padding: EdgeInsets.all(16.0),
                                   child: StreamBuilder<UsersRecord>(
                                     stream: UsersRecord.getDocument(
-                                        verifiedDogsRecord.userAssociation!),
+                                        verifiedUserPostsRecord.postUser!),
                                     builder: (context, snapshot) {
                                       // Customize what your widget looks like when it's loading.
                                       if (!snapshot.hasData) {
@@ -733,11 +749,12 @@ class _DashmobileWidgetState extends State<DashmobileWidget> {
                                         highlightColor: Colors.transparent,
                                         onTap: () async {
                                           context.pushNamed(
-                                            DogVerificationDetailsWidget
+                                            PostVerificationDetailsWidget
                                                 .routeName,
                                             queryParameters: {
-                                              'dogDetails': serializeParam(
-                                                verifiedDogsRecord.reference,
+                                              'postDetails': serializeParam(
+                                                verifiedUserPostsRecord
+                                                    .reference,
                                                 ParamType.DocumentReference,
                                               ),
                                             }.withoutNulls,
@@ -776,9 +793,8 @@ class _DashmobileWidgetState extends State<DashmobileWidget> {
                                                     shape: BoxShape.circle,
                                                   ),
                                                   child: Image.network(
-                                                    verifiedDogsRecord
-                                                        .postImages
-                                                        .firstOrNull!,
+                                                    verifiedUserPostsRecord
+                                                        .postPhoto,
                                                     fit: BoxFit.cover,
                                                   ),
                                                 ),
@@ -794,8 +810,8 @@ class _DashmobileWidgetState extends State<DashmobileWidget> {
                                                             .start,
                                                     children: [
                                                       Text(
-                                                        verifiedDogsRecord
-                                                            .dogName,
+                                                        verifiedUserPostsRecord
+                                                            .postTitle,
                                                         style:
                                                             FlutterFlowTheme.of(
                                                                     context)
@@ -828,6 +844,8 @@ class _DashmobileWidgetState extends State<DashmobileWidget> {
                                                                       .bodyMedium
                                                                       .fontStyle,
                                                                 ),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                       ),
                                                       RichText(
                                                         textScaler:
@@ -971,7 +989,10 @@ class _DashmobileWidgetState extends State<DashmobileWidget> {
                                                                   ),
                                                             ),
                                                             TextSpan(
-                                                              text: '',
+                                                              text: dateTimeFormat(
+                                                                  "relative",
+                                                                  verifiedUserPostsRecord
+                                                                      .timePosted!),
                                                               style: FlutterFlowTheme
                                                                       .of(context)
                                                                   .bodyMedium
@@ -1135,12 +1156,14 @@ class _DashmobileWidgetState extends State<DashmobileWidget> {
                           },
                         ),
                       if (_model.category == 'Rejected')
-                        StreamBuilder<List<DogsRecord>>(
-                          stream: queryDogsRecord(
-                            queryBuilder: (dogsRecord) => dogsRecord.where(
-                              'rejected',
-                              isEqualTo: true,
-                            ),
+                        StreamBuilder<List<UserPostsRecord>>(
+                          stream: queryUserPostsRecord(
+                            queryBuilder: (userPostsRecord) => userPostsRecord
+                                .where(
+                                  'rejected',
+                                  isEqualTo: true,
+                                )
+                                .orderBy('timePosted', descending: true),
                           ),
                           builder: (context, snapshot) {
                             // Customize what your widget looks like when it's loading.
@@ -1157,22 +1180,22 @@ class _DashmobileWidgetState extends State<DashmobileWidget> {
                                 ),
                               );
                             }
-                            List<DogsRecord> rejectedDogsRecordList =
+                            List<UserPostsRecord> rejectedUserPostsRecordList =
                                 snapshot.data!;
 
                             return ListView.builder(
                               padding: EdgeInsets.zero,
                               shrinkWrap: true,
                               scrollDirection: Axis.vertical,
-                              itemCount: rejectedDogsRecordList.length,
+                              itemCount: rejectedUserPostsRecordList.length,
                               itemBuilder: (context, rejectedIndex) {
-                                final rejectedDogsRecord =
-                                    rejectedDogsRecordList[rejectedIndex];
+                                final rejectedUserPostsRecord =
+                                    rejectedUserPostsRecordList[rejectedIndex];
                                 return Padding(
                                   padding: EdgeInsets.all(16.0),
                                   child: StreamBuilder<UsersRecord>(
                                     stream: UsersRecord.getDocument(
-                                        rejectedDogsRecord.userAssociation!),
+                                        rejectedUserPostsRecord.postUser!),
                                     builder: (context, snapshot) {
                                       // Customize what your widget looks like when it's loading.
                                       if (!snapshot.hasData) {
@@ -1201,11 +1224,12 @@ class _DashmobileWidgetState extends State<DashmobileWidget> {
                                         highlightColor: Colors.transparent,
                                         onTap: () async {
                                           context.pushNamed(
-                                            DogVerificationDetailsWidget
+                                            PostVerificationDetailsWidget
                                                 .routeName,
                                             queryParameters: {
-                                              'dogDetails': serializeParam(
-                                                rejectedDogsRecord.reference,
+                                              'postDetails': serializeParam(
+                                                rejectedUserPostsRecord
+                                                    .reference,
                                                 ParamType.DocumentReference,
                                               ),
                                             }.withoutNulls,
@@ -1244,9 +1268,8 @@ class _DashmobileWidgetState extends State<DashmobileWidget> {
                                                     shape: BoxShape.circle,
                                                   ),
                                                   child: Image.network(
-                                                    rejectedDogsRecord
-                                                        .postImages
-                                                        .firstOrNull!,
+                                                    rejectedUserPostsRecord
+                                                        .postPhoto,
                                                     fit: BoxFit.cover,
                                                   ),
                                                 ),
@@ -1262,8 +1285,8 @@ class _DashmobileWidgetState extends State<DashmobileWidget> {
                                                             .start,
                                                     children: [
                                                       Text(
-                                                        rejectedDogsRecord
-                                                            .dogName,
+                                                        rejectedUserPostsRecord
+                                                            .postTitle,
                                                         style:
                                                             FlutterFlowTheme.of(
                                                                     context)
@@ -1296,6 +1319,8 @@ class _DashmobileWidgetState extends State<DashmobileWidget> {
                                                                       .bodyMedium
                                                                       .fontStyle,
                                                                 ),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                       ),
                                                       RichText(
                                                         textScaler:
@@ -1439,7 +1464,10 @@ class _DashmobileWidgetState extends State<DashmobileWidget> {
                                                                   ),
                                                             ),
                                                             TextSpan(
-                                                              text: '',
+                                                              text: dateTimeFormat(
+                                                                  "relative",
+                                                                  rejectedUserPostsRecord
+                                                                      .timePosted!),
                                                               style: FlutterFlowTheme
                                                                       .of(context)
                                                                   .bodyMedium

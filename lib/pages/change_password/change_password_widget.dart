@@ -98,6 +98,7 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget> {
                         fontStyle:
                             FlutterFlowTheme.of(context).bodySmall.fontStyle,
                       ),
+                      color: FlutterFlowTheme.of(context).accent1,
                       letterSpacing: 0.0,
                       fontWeight:
                           FlutterFlowTheme.of(context).bodySmall.fontWeight,
@@ -146,7 +147,7 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget> {
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 filled: true,
-                fillColor: FlutterFlowTheme.of(context).primaryBackground,
+                fillColor: FlutterFlowTheme.of(context).accent3,
                 contentPadding:
                     EdgeInsetsDirectional.fromSTEB(20.0, 24.0, 20.0, 24.0),
               ),

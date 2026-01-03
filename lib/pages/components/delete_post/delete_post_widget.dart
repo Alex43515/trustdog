@@ -1,3 +1,4 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -57,26 +58,27 @@ class _DeletePostWidgetState extends State<DeletePostWidget> {
           children: [
             FFButtonWidget(
               onPressed: () async {
-                await widget.postParameters!.reference.delete();
-
                 context.pushNamed(
-                  HomePageWidget.routeName,
-                  extra: <String, dynamic>{
-                    kTransitionInfoKey: TransitionInfo(
-                      hasTransition: true,
-                      transitionType: PageTransitionType.leftToRight,
-                      duration: Duration(milliseconds: 220),
+                  PageBoostWidget.routeName,
+                  queryParameters: {
+                    'userRef': serializeParam(
+                      currentUserReference,
+                      ParamType.DocumentReference,
                     ),
-                  },
+                    'userPostsRef': serializeParam(
+                      widget.postParameters?.reference,
+                      ParamType.DocumentReference,
+                    ),
+                  }.withoutNulls,
                 );
               },
-              text: 'Delete Post',
+              text: 'Boost Post',
               options: FFButtonOptions(
                 width: double.infinity,
                 height: 60.0,
                 padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                 iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                color: Color(0xFFFF5963),
+                color: FlutterFlowTheme.of(context).primary,
                 textStyle: FlutterFlowTheme.of(context).titleSmall.override(
                       font: GoogleFonts.urbanist(
                         fontWeight:
@@ -97,6 +99,55 @@ class _DeletePostWidgetState extends State<DeletePostWidget> {
                   width: 1.0,
                 ),
                 borderRadius: BorderRadius.circular(40.0),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
+              child: FFButtonWidget(
+                onPressed: () async {
+                  await widget.postParameters!.reference.delete();
+
+                  context.pushNamed(
+                    HomePageWidget.routeName,
+                    extra: <String, dynamic>{
+                      kTransitionInfoKey: TransitionInfo(
+                        hasTransition: true,
+                        transitionType: PageTransitionType.leftToRight,
+                        duration: Duration(milliseconds: 220),
+                      ),
+                    },
+                  );
+                },
+                text: 'Delete Post',
+                options: FFButtonOptions(
+                  width: double.infinity,
+                  height: 60.0,
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                  iconPadding:
+                      EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                  color: Color(0xFFFF5963),
+                  textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                        font: GoogleFonts.urbanist(
+                          fontWeight: FlutterFlowTheme.of(context)
+                              .titleSmall
+                              .fontWeight,
+                          fontStyle:
+                              FlutterFlowTheme.of(context).titleSmall.fontStyle,
+                        ),
+                        color: Colors.white,
+                        letterSpacing: 0.0,
+                        fontWeight:
+                            FlutterFlowTheme.of(context).titleSmall.fontWeight,
+                        fontStyle:
+                            FlutterFlowTheme.of(context).titleSmall.fontStyle,
+                      ),
+                  elevation: 2.0,
+                  borderSide: BorderSide(
+                    color: Colors.transparent,
+                    width: 1.0,
+                  ),
+                  borderRadius: BorderRadius.circular(40.0),
+                ),
               ),
             ),
             Padding(

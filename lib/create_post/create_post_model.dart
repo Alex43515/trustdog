@@ -80,6 +80,11 @@ class CreatePostModel extends FlutterFlowModel<CreatePostWidget> {
       FFUploadedFile(bytes: Uint8List.fromList([]), originalFilename: '');
   String uploadedFileUrl_uploadDataDcl = '';
 
+  // Stores action output result for [Backend Call - Create Document] action in Button widget.
+  UserPostsRecord? userPosts2;
+  // Stores action output result for [Backend Call - Create Document] action in Button widget.
+  UserPostsRecord? userPosts;
+
   @override
   void initState(BuildContext context) {}
 

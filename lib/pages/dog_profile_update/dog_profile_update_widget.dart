@@ -2776,9 +2776,9 @@ class _DogProfileUpdateWidgetState extends State<DogProfileUpdateWidget> {
                                 });
                                 context.pop();
                               },
-                              text: 'Add Pup',
+                              text: 'Update Pup',
                               options: FFButtonOptions(
-                                width: 180.0,
+                                width: MediaQuery.sizeOf(context).width * 0.4,
                                 height: 50.0,
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 0.0, 0.0),
@@ -2825,7 +2825,7 @@ class _DogProfileUpdateWidgetState extends State<DogProfileUpdateWidget> {
                               },
                               text: 'Delete Pup',
                               options: FFButtonOptions(
-                                width: 180.0,
+                                width: MediaQuery.sizeOf(context).width * 0.4,
                                 height: 50.0,
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 0.0, 0.0),

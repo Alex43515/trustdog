@@ -120,11 +120,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               : HomePageWidget(),
         ),
         FFRoute(
-          name: CreateStoryWidget.routeName,
-          path: CreateStoryWidget.routePath,
-          builder: (context, params) => CreateStoryWidget(),
-        ),
-        FFRoute(
           name: CreatePostWidget.routeName,
           path: CreatePostWidget.routePath,
           builder: (context, params) => params.isEmpty
@@ -147,16 +142,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             userRecord: params.getParam(
               'userRecord',
               ParamType.Document,
-            ),
-          ),
-        ),
-        FFRoute(
-          name: StoryDetailsWidget.routeName,
-          path: StoryDetailsWidget.routePath,
-          builder: (context, params) => StoryDetailsWidget(
-            initialStoryIndex: params.getParam(
-              'initialStoryIndex',
-              ParamType.int,
             ),
           ),
         ),
@@ -264,11 +249,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               : Profilepage2Widget(),
         ),
         FFRoute(
-          name: TestWidget.routeName,
-          path: TestWidget.routePath,
-          builder: (context, params) => TestWidget(),
-        ),
-        FFRoute(
           name: DogMapWidget.routeName,
           path: DogMapWidget.routePath,
           builder: (context, params) => params.isEmpty
@@ -287,11 +267,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               ParamType.Document,
             ),
           ),
-        ),
-        FFRoute(
-          name: DashDesktopWidget.routeName,
-          path: DashDesktopWidget.routePath,
-          builder: (context, params) => DashDesktopWidget(),
         ),
         FFRoute(
           name: DashmobileWidget.routeName,
@@ -338,6 +313,51 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: UnderReviewDogsWidget.routeName,
           path: UnderReviewDogsWidget.routePath,
           builder: (context, params) => UnderReviewDogsWidget(),
+        ),
+        FFRoute(
+          name: PageBoostWidget.routeName,
+          path: PageBoostWidget.routePath,
+          builder: (context, params) => PageBoostWidget(
+            userRef: params.getParam(
+              'userRef',
+              ParamType.DocumentReference,
+              isList: false,
+              collectionNamePath: ['users'],
+            ),
+            userPostsRef: params.getParam(
+              'userPostsRef',
+              ParamType.DocumentReference,
+              isList: false,
+              collectionNamePath: ['userPosts'],
+            ),
+          ),
+        ),
+        FFRoute(
+          name: PostVerificationWidget.routeName,
+          path: PostVerificationWidget.routePath,
+          builder: (context, params) => PostVerificationWidget(),
+        ),
+        FFRoute(
+          name: PostVerificationDetailsWidget.routeName,
+          path: PostVerificationDetailsWidget.routePath,
+          builder: (context, params) => PostVerificationDetailsWidget(
+            postDetails: params.getParam(
+              'postDetails',
+              ParamType.DocumentReference,
+              isList: false,
+              collectionNamePath: ['userPosts'],
+            ),
+          ),
+        ),
+        FFRoute(
+          name: UnderReviewPostsWidget.routeName,
+          path: UnderReviewPostsWidget.routePath,
+          builder: (context, params) => UnderReviewPostsWidget(),
+        ),
+        FFRoute(
+          name: NotificationWidget.routeName,
+          path: NotificationWidget.routePath,
+          builder: (context, params) => NotificationWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
       observers: [routeObserver],

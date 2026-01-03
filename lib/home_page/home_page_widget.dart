@@ -1,6 +1,7 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/backend/backend.dart';
+import '/backend/push_notifications/push_notifications_util.dart';
 import '/components/filter2_widget.dart';
 import '/flutter_flow/flutter_flow_ad_banner.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -11,6 +12,7 @@ import '/flutter_flow/flutter_flow_video_player.dart';
 import '/flutter_flow/admob_util.dart' as admob;
 import '/flutter_flow/custom_functions.dart' as functions;
 import '/index.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +52,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
         false,
       );
 
-      safeSetState(() {});
+      safeSetState(() => _model.listViewPagingController?.refresh());
     });
 
     _model.textController ??= TextEditingController();
@@ -95,19 +97,84 @@ class _HomePageWidgetState extends State<HomePageWidget> {
         ),
         actions: [
           Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
-            child: FlutterFlowIconButton(
-              borderColor: Colors.transparent,
-              borderRadius: 30.0,
-              buttonSize: 46.0,
-              icon: Icon(
-                Icons.notifications_outlined,
-                color: FlutterFlowTheme.of(context).grayIcon,
-                size: 25.0,
-              ),
-              onPressed: () {
-                print('IconButton pressed ...');
-              },
+            padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 16.0, 0.0),
+            child: Stack(
+              children: [
+                Align(
+                  alignment: AlignmentDirectional(1.0, -1.0),
+                  child: AuthUserStreamWidget(
+                    builder: (context) => InkWell(
+                      splashColor: Colors.transparent,
+                      focusColor: Colors.transparent,
+                      hoverColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onTap: () async {
+                        await currentUserReference!
+                            .update(createUsersRecordData(
+                          hasUnreadMessages: false,
+                        ));
+
+                        context.pushNamed(NotificationWidget.routeName);
+                      },
+                      child: badges.Badge(
+                        badgeContent: Text(
+                          '1',
+                          style:
+                              FlutterFlowTheme.of(context).titleSmall.override(
+                                    font: GoogleFonts.urbanist(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .titleSmall
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .titleSmall
+                                          .fontStyle,
+                                    ),
+                                    color: Colors.white,
+                                    fontSize: 12.0,
+                                    letterSpacing: 0.0,
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .titleSmall
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .titleSmall
+                                        .fontStyle,
+                                  ),
+                        ),
+                        showBadge: valueOrDefault<bool>(
+                                currentUserDocument?.hasUnreadMessages,
+                                false) ==
+                            true,
+                        shape: badges.BadgeShape.circle,
+                        badgeColor: FlutterFlowTheme.of(context).primary,
+                        elevation: 4.0,
+                        padding:
+                            EdgeInsetsDirectional.fromSTEB(8.0, 8.0, 8.0, 8.0),
+                        position: badges.BadgePosition.topEnd(),
+                        animationType: badges.BadgeAnimationType.scale,
+                        toAnimate: true,
+                        child: FlutterFlowIconButton(
+                          borderColor: Colors.transparent,
+                          borderRadius: 30.0,
+                          buttonSize: 46.0,
+                          icon: Icon(
+                            Icons.notifications_outlined,
+                            color: FlutterFlowTheme.of(context).grayIcon,
+                            size: 25.0,
+                          ),
+                          onPressed: () async {
+                            await currentUserReference!
+                                .update(createUsersRecordData(
+                              hasUnreadMessages: false,
+                            ));
+
+                            context.pushNamed(NotificationWidget.routeName);
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -185,6 +252,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               0.0, 4.0, 0.0, 8.0),
                           child: StreamBuilder<List<DogsRecord>>(
                             stream: queryDogsRecord(
+                              queryBuilder: (dogsRecord) => dogsRecord.where(
+                                'verified',
+                                isEqualTo: true,
+                              ),
                               limit: 20,
                             ),
                             builder: (context, snapshot) {
@@ -202,9 +273,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 );
                               }
-                              List<DogsRecord> listViewDogsRecordList =
+                              List<DogsRecord> listView1DogsRecordList =
                                   snapshot.data!;
-                              if (listViewDogsRecordList.isEmpty) {
+                              if (listView1DogsRecordList.isEmpty) {
                                 return Center(
                                   child: Image.asset(
                                     'assets/images/2vqf7_',
@@ -216,13 +287,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               return ListView.builder(
                                 padding: EdgeInsets.zero,
                                 scrollDirection: Axis.horizontal,
-                                itemCount: listViewDogsRecordList.length,
-                                itemBuilder: (context, listViewIndex) {
-                                  final listViewDogsRecord =
-                                      listViewDogsRecordList[listViewIndex];
+                                itemCount: listView1DogsRecordList.length,
+                                itemBuilder: (context, listView1Index) {
+                                  final listView1DogsRecord =
+                                      listView1DogsRecordList[listView1Index];
                                   return Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
-                                        16.0, 12.0, 16.0, 0.0),
+                                        16.0, 12.0, 0.0, 0.0),
                                     child: InkWell(
                                       splashColor: Colors.transparent,
                                       focusColor: Colors.transparent,
@@ -233,7 +304,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                           DegDetailsWidget.routeName,
                                           queryParameters: {
                                             'dogDetails': serializeParam(
-                                              listViewDogsRecord.reference,
+                                              listView1DogsRecord.reference,
                                               ParamType.DocumentReference,
                                             ),
                                             'userRecord': serializeParam(
@@ -300,7 +371,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                       fadeOutDuration: Duration(
                                                           milliseconds: 500),
                                                       imageUrl:
-                                                          listViewDogsRecord
+                                                          listView1DogsRecord
                                                               .postImages
                                                               .firstOrNull!,
                                                       width: 100.0,
@@ -319,7 +390,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                             .fromSTEB(0.0, 0.0,
                                                                 0.0, 5.0),
                                                     child: Text(
-                                                      listViewDogsRecord
+                                                      listView1DogsRecord
                                                           .dogName,
                                                       textAlign:
                                                           TextAlign.start,
@@ -410,9 +481,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         () async {
                           FFAppState().search = _model.textController.text;
                           safeSetState(() {});
-                          safeSetState(() =>
-                              _model.listViewPagingController2?.refresh());
-                          await _model.waitForOnePageForListView2();
+                          safeSetState(
+                              () => _model.listViewPagingController?.refresh());
+                          await _model.waitForOnePageForListView();
                         },
                       ),
                       autofocus: false,
@@ -546,7 +617,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
               ),
             ),
             PagedListView<ApiPagingParams, dynamic>(
-              pagingController: _model.setListViewController2(
+              pagingController: _model.setListViewController(
                 (nextPageMarker) => QueryAlgoliaCall.call(
                   idToken: currentJwtToken,
                   page: nextPageMarker.nextPageNumber,
@@ -565,11 +636,14 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       valueOrDefault<double>(
                         FFAppState().priceMax,
                         5000.0,
-                      )),
+                      ),
+                      true,
+                      FFAppState().sponsored),
                   searchTerm: FFAppState().search,
                 ),
               ),
               padding: EdgeInsets.zero,
+              primary: false,
               shrinkWrap: true,
               reverse: false,
               scrollDirection: Axis.vertical,
@@ -601,7 +675,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
                 itemBuilder: (context, _, algoliaItemIndex) {
                   final algoliaItemItem = _model
-                      .listViewPagingController2!.itemList![algoliaItemIndex];
+                      .listViewPagingController!.itemList![algoliaItemIndex];
                   return Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 8.0),
                     child: StreamBuilder<UserPostsRecord>(
@@ -631,10 +705,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         return Container(
                           width: MediaQuery.sizeOf(context).width * 1.0,
                           decoration: BoxDecoration(
-                            color: userPostUserPostsRecord.sponsored == true
+                            color: (userPostUserPostsRecord.boostedUntil !=
+                                        null) &&
+                                    (userPostUserPostsRecord.boostedUntil! >
+                                        getCurrentTimestamp)
                                 ? FlutterFlowTheme.of(context).secondary
                                 : FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
+                                    .primaryBackground,
                             boxShadow: [
                               BoxShadow(
                                 blurRadius: 4.0,
@@ -914,31 +991,55 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                           ),
                                         if (userPostUserPostsRecord.postVideo !=
                                                 '')
-                                          FlutterFlowMediaDisplay(
-                                            path: userPostUserPostsRecord
-                                                .videoThumbnail,
-                                            imageBuilder: (path) =>
-                                                CachedNetworkImage(
-                                              fadeInDuration:
-                                                  Duration(milliseconds: 0),
-                                              fadeOutDuration:
-                                                  Duration(milliseconds: 0),
-                                              imageUrl: path,
-                                              width: MediaQuery.sizeOf(context)
-                                                      .width *
-                                                  1.0,
-                                              height: 300.0,
-                                              fit: BoxFit.cover,
-                                            ),
-                                            videoPlayerBuilder: (path) =>
-                                                FlutterFlowVideoPlayer(
-                                              path: path,
-                                              width: 300.0,
-                                              autoPlay: false,
-                                              looping: true,
-                                              showControls: true,
-                                              allowFullScreen: true,
-                                              allowPlaybackSpeedMenu: false,
+                                          Align(
+                                            alignment:
+                                                AlignmentDirectional(0.0, 0.0),
+                                            child: Stack(
+                                              alignment: AlignmentDirectional(
+                                                  0.0, 0.0),
+                                              children: [
+                                                FlutterFlowMediaDisplay(
+                                                  path: userPostUserPostsRecord
+                                                      .videoThumbnail,
+                                                  imageBuilder: (path) =>
+                                                      CachedNetworkImage(
+                                                    fadeInDuration: Duration(
+                                                        milliseconds: 0),
+                                                    fadeOutDuration: Duration(
+                                                        milliseconds: 0),
+                                                    imageUrl: path,
+                                                    width: MediaQuery.sizeOf(
+                                                                context)
+                                                            .width *
+                                                        1.0,
+                                                    height: 300.0,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                  videoPlayerBuilder: (path) =>
+                                                      FlutterFlowVideoPlayer(
+                                                    path: path,
+                                                    width: 300.0,
+                                                    autoPlay: false,
+                                                    looping: true,
+                                                    showControls: true,
+                                                    allowFullScreen: true,
+                                                    allowPlaybackSpeedMenu:
+                                                        false,
+                                                  ),
+                                                ),
+                                                Align(
+                                                  alignment:
+                                                      AlignmentDirectional(
+                                                          0.0, 0.0),
+                                                  child: Icon(
+                                                    Icons.play_circle,
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .primary,
+                                                    size: 40.0,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                       ],
@@ -986,6 +1087,33 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                   Colors
                                                                       .transparent,
                                                               onTap: () async {
+                                                                var notificationsRecordReference =
+                                                                    NotificationsRecord
+                                                                        .collection
+                                                                        .doc();
+                                                                await notificationsRecordReference
+                                                                    .set(
+                                                                        createNotificationsRecordData(
+                                                                  userID:
+                                                                      currentUserReference,
+                                                                  postID: userPostUserPostsRecord
+                                                                      .reference,
+                                                                  time:
+                                                                      getCurrentTimestamp,
+                                                                  notificationType:
+                                                                      'Like',
+                                                                ));
+                                                                _model.postNot =
+                                                                    NotificationsRecord
+                                                                        .getDocumentFromData(
+                                                                            createNotificationsRecordData(
+                                                                              userID: currentUserReference,
+                                                                              postID: userPostUserPostsRecord.reference,
+                                                                              time: getCurrentTimestamp,
+                                                                              notificationType: 'Like',
+                                                                            ),
+                                                                            notificationsRecordReference);
+
                                                                 await userPostUserPostsRecord
                                                                     .reference
                                                                     .update({
@@ -999,6 +1127,51 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                     },
                                                                   ),
                                                                 });
+
+                                                                await columnUsersRecord
+                                                                    .reference
+                                                                    .update({
+                                                                  ...createUsersRecordData(
+                                                                    hasUnreadMessages:
+                                                                        true,
+                                                                  ),
+                                                                  ...mapToFirestore(
+                                                                    {
+                                                                      'unreadNotifications':
+                                                                          FieldValue
+                                                                              .arrayUnion([
+                                                                        _model
+                                                                            .postNot
+                                                                            ?.reference
+                                                                      ]),
+                                                                    },
+                                                                  ),
+                                                                });
+                                                                triggerPushNotification(
+                                                                  notificationTitle:
+                                                                      'TrustDog',
+                                                                  notificationText:
+                                                                      '${columnUsersRecord.displayName} liked your listing',
+                                                                  notificationImageUrl:
+                                                                      userPostUserPostsRecord
+                                                                          .postPhoto,
+                                                                  userRefs: [
+                                                                    columnUsersRecord
+                                                                        .reference
+                                                                  ],
+                                                                  initialPageName:
+                                                                      'postDetails',
+                                                                  parameterData: {
+                                                                    'postReference':
+                                                                        userPostUserPostsRecord
+                                                                            .reference,
+                                                                    'userRecord':
+                                                                        columnUsersRecord,
+                                                                  },
+                                                                );
+
+                                                                safeSetState(
+                                                                    () {});
                                                               },
                                                               child: FaIcon(
                                                                 FontAwesomeIcons
@@ -1045,9 +1218,16 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                               child: FaIcon(
                                                                 FontAwesomeIcons
                                                                     .paw,
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .secondary,
+                                                                color: (userPostUserPostsRecord.boostedUntil !=
+                                                                            null) &&
+                                                                        (userPostUserPostsRecord.boostedUntil! >
+                                                                            getCurrentTimestamp)
+                                                                    ? FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .primary
+                                                                    : FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondary,
                                                                 size: 25.0,
                                                               ),
                                                             ),
@@ -1192,11 +1372,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                     ),
                                               ),
                                             ),
-                                            Icon(
-                                              Icons.ios_share,
-                                              color: Color(0xFF95A1AC),
-                                              size: 24.0,
-                                            ),
                                           ],
                                         ),
                                       ],
@@ -1213,8 +1388,16 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                               MediaQuery.sizeOf(context).width *
                                                   0.99,
                                           decoration: BoxDecoration(
-                                            color: FlutterFlowTheme.of(context)
-                                                .secondaryBackground,
+                                            color: (userPostUserPostsRecord
+                                                            .boostedUntil !=
+                                                        null) &&
+                                                    (userPostUserPostsRecord
+                                                            .boostedUntil! >
+                                                        getCurrentTimestamp)
+                                                ? FlutterFlowTheme.of(context)
+                                                    .secondary
+                                                : FlutterFlowTheme.of(context)
+                                                    .primaryBackground,
                                             borderRadius: BorderRadius.only(
                                               bottomLeft: Radius.circular(10.0),
                                               bottomRight:
