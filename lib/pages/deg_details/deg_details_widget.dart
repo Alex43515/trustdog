@@ -214,7 +214,7 @@ class _DegDetailsWidgetState extends State<DegDetailsWidget> {
                                   child: Icon(
                                     Icons.arrow_back,
                                     color:
-                                        FlutterFlowTheme.of(context).alternate,
+                                        FlutterFlowTheme.of(context).secondary,
                                     size: 24.0,
                                   ),
                                 ),
@@ -294,7 +294,7 @@ class _DegDetailsWidgetState extends State<DegDetailsWidget> {
                                   child: Icon(
                                     Icons.more_vert,
                                     color:
-                                        FlutterFlowTheme.of(context).alternate,
+                                        FlutterFlowTheme.of(context).secondary,
                                     size: 24.0,
                                   ),
                                 ),

@@ -348,340 +348,349 @@ class _CreateDogProfileNewWidgetState extends State<CreateDogProfileNewWidget> {
                         ),
                       ),
                     ),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Stack(
-                          children: [
-                            if ((FFAppState().video1 == '') &&
-                                ((FFAppState().video2 == '') &&
-                                    (FFAppState().video3 == '')))
-                              InkWell(
-                                splashColor: Colors.transparent,
-                                focusColor: Colors.transparent,
-                                hoverColor: Colors.transparent,
-                                highlightColor: Colors.transparent,
-                                onTap: () async {
-                                  _model.pickVideo = await actions.pickVideo(
-                                    false,
-                                  );
-                                  _model.compressVideo =
-                                      await actions.compressVideo(
-                                    _model.pickVideo!,
-                                  );
-                                  _model.videoPreview =
-                                      await actions.generate2SecondVideoPreview(
-                                    _model.compressVideo!,
-                                  );
-                                  {
-                                    safeSetState(() => _model
-                                            .isDataUploading_uploadDataNtwVideo2 =
-                                        true);
-                                    var selectedUploadedFiles =
-                                        <FFUploadedFile>[];
-                                    var selectedMedia = <SelectedFile>[];
-                                    var downloadUrls = <String>[];
-                                    try {
-                                      showUploadMessage(
-                                        context,
-                                        'Uploading file...',
-                                        showLoading: true,
-                                      );
-                                      selectedUploadedFiles = _model
-                                              .compressVideo!.bytes!.isNotEmpty
-                                          ? [_model.compressVideo!]
-                                          : <FFUploadedFile>[];
-                                      selectedMedia =
-                                          selectedFilesFromUploadedFiles(
-                                        selectedUploadedFiles,
-                                      );
-                                      downloadUrls = (await Future.wait(
-                                        selectedMedia.map(
-                                          (m) async => await uploadData(
-                                              m.storagePath, m.bytes),
-                                        ),
-                                      ))
-                                          .where((u) => u != null)
-                                          .map((u) => u!)
-                                          .toList();
-                                    } finally {
-                                      ScaffoldMessenger.of(context)
-                                          .hideCurrentSnackBar();
-                                      _model.isDataUploading_uploadDataNtwVideo2 =
-                                          false;
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Stack(
+                            children: [
+                              if ((FFAppState().video1 == '') &&
+                                  ((FFAppState().video2 == '') &&
+                                      (FFAppState().video3 == '')))
+                                InkWell(
+                                  splashColor: Colors.transparent,
+                                  focusColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  onTap: () async {
+                                    _model.pickVideo = await actions.pickVideo(
+                                      false,
+                                    );
+                                    _model.compressVideo =
+                                        await actions.compressVideo(
+                                      _model.pickVideo!,
+                                    );
+                                    _model.videoPreview = await actions
+                                        .generate2SecondVideoPreview(
+                                      _model.compressVideo!,
+                                    );
+                                    {
+                                      safeSetState(() => _model
+                                              .isDataUploading_uploadDataNtwVideo2 =
+                                          true);
+                                      var selectedUploadedFiles =
+                                          <FFUploadedFile>[];
+                                      var selectedMedia = <SelectedFile>[];
+                                      var downloadUrls = <String>[];
+                                      try {
+                                        showUploadMessage(
+                                          context,
+                                          'Uploading file...',
+                                          showLoading: true,
+                                        );
+                                        selectedUploadedFiles = _model
+                                                .compressVideo!
+                                                .bytes!
+                                                .isNotEmpty
+                                            ? [_model.compressVideo!]
+                                            : <FFUploadedFile>[];
+                                        selectedMedia =
+                                            selectedFilesFromUploadedFiles(
+                                          selectedUploadedFiles,
+                                        );
+                                        downloadUrls = (await Future.wait(
+                                          selectedMedia.map(
+                                            (m) async => await uploadData(
+                                                m.storagePath, m.bytes),
+                                          ),
+                                        ))
+                                            .where((u) => u != null)
+                                            .map((u) => u!)
+                                            .toList();
+                                      } finally {
+                                        ScaffoldMessenger.of(context)
+                                            .hideCurrentSnackBar();
+                                        _model.isDataUploading_uploadDataNtwVideo2 =
+                                            false;
+                                      }
+                                      if (selectedUploadedFiles.length ==
+                                              selectedMedia.length &&
+                                          downloadUrls.length ==
+                                              selectedMedia.length) {
+                                        safeSetState(() {
+                                          _model.uploadedLocalFile_uploadDataNtwVideo2 =
+                                              selectedUploadedFiles.first;
+                                          _model.uploadedFileUrl_uploadDataNtwVideo2 =
+                                              downloadUrls.first;
+                                        });
+                                        showUploadMessage(context, 'Success!');
+                                      } else {
+                                        safeSetState(() {});
+                                        showUploadMessage(
+                                            context, 'Failed to upload data');
+                                        return;
+                                      }
                                     }
-                                    if (selectedUploadedFiles.length ==
-                                            selectedMedia.length &&
-                                        downloadUrls.length ==
-                                            selectedMedia.length) {
-                                      safeSetState(() {
-                                        _model.uploadedLocalFile_uploadDataNtwVideo2 =
-                                            selectedUploadedFiles.first;
-                                        _model.uploadedFileUrl_uploadDataNtwVideo2 =
-                                            downloadUrls.first;
-                                      });
-                                      showUploadMessage(context, 'Success!');
-                                    } else {
-                                      safeSetState(() {});
-                                      showUploadMessage(
-                                          context, 'Failed to upload data');
-                                      return;
-                                    }
-                                  }
 
-                                  FFAppState().video1 = _model
-                                      .uploadedFileUrl_uploadDataNtwVideo2;
-                                  safeSetState(() {});
+                                    FFAppState().video1 = _model
+                                        .uploadedFileUrl_uploadDataNtwVideo2;
+                                    safeSetState(() {});
 
-                                  safeSetState(() {});
-                                },
-                                child: Container(
-                                  width: 100.0,
-                                  height: 100.0,
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                    borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(20.0),
-                                      bottomRight: Radius.circular(20.0),
-                                      topLeft: Radius.circular(20.0),
-                                      topRight: Radius.circular(20.0),
+                                    safeSetState(() {});
+                                  },
+                                  child: Container(
+                                    width: 100.0,
+                                    height: 100.0,
+                                    decoration: BoxDecoration(
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryBackground,
+                                      borderRadius: BorderRadius.only(
+                                        bottomLeft: Radius.circular(20.0),
+                                        bottomRight: Radius.circular(20.0),
+                                        topLeft: Radius.circular(20.0),
+                                        topRight: Radius.circular(20.0),
+                                      ),
+                                      shape: BoxShape.rectangle,
+                                      border: Border.all(
+                                        color: FlutterFlowTheme.of(context)
+                                            .accent4,
+                                        width: 1.0,
+                                      ),
                                     ),
-                                    shape: BoxShape.rectangle,
-                                    border: Border.all(
+                                    child: Icon(
+                                      Icons.add,
                                       color:
-                                          FlutterFlowTheme.of(context).accent4,
-                                      width: 1.0,
+                                          FlutterFlowTheme.of(context).accent1,
+                                      size: 50.0,
                                     ),
-                                  ),
-                                  child: Icon(
-                                    Icons.add,
-                                    color: FlutterFlowTheme.of(context).accent1,
-                                    size: 50.0,
                                   ),
                                 ),
-                              ),
-                            if ((FFAppState().video2 == '') &&
-                                ((FFAppState().video1 != '') &&
-                                    (FFAppState().video3 == '')))
-                              InkWell(
-                                splashColor: Colors.transparent,
-                                focusColor: Colors.transparent,
-                                hoverColor: Colors.transparent,
-                                highlightColor: Colors.transparent,
-                                onTap: () async {
-                                  _model.pickvideo2 = await actions.pickVideo(
-                                    false,
-                                  );
-                                  _model.compressvideo2 =
-                                      await actions.compressVideo(
-                                    _model.pickvideo2!,
-                                  );
-                                  _model.previewVideo2 =
-                                      await actions.generate2SecondVideoPreview(
-                                    _model.compressvideo2!,
-                                  );
-                                  {
-                                    safeSetState(() => _model
-                                            .isDataUploading_uploadDataNtwVideo3 =
-                                        true);
-                                    var selectedUploadedFiles =
-                                        <FFUploadedFile>[];
-                                    var selectedMedia = <SelectedFile>[];
-                                    var downloadUrls = <String>[];
-                                    try {
-                                      showUploadMessage(
-                                        context,
-                                        'Uploading file...',
-                                        showLoading: true,
-                                      );
-                                      selectedUploadedFiles = _model
-                                              .compressvideo2!.bytes!.isNotEmpty
-                                          ? [_model.compressvideo2!]
-                                          : <FFUploadedFile>[];
-                                      selectedMedia =
-                                          selectedFilesFromUploadedFiles(
-                                        selectedUploadedFiles,
-                                      );
-                                      downloadUrls = (await Future.wait(
-                                        selectedMedia.map(
-                                          (m) async => await uploadData(
-                                              m.storagePath, m.bytes),
-                                        ),
-                                      ))
-                                          .where((u) => u != null)
-                                          .map((u) => u!)
-                                          .toList();
-                                    } finally {
-                                      ScaffoldMessenger.of(context)
-                                          .hideCurrentSnackBar();
-                                      _model.isDataUploading_uploadDataNtwVideo3 =
-                                          false;
+                              if ((FFAppState().video2 == '') &&
+                                  ((FFAppState().video1 != '') &&
+                                      (FFAppState().video3 == '')))
+                                InkWell(
+                                  splashColor: Colors.transparent,
+                                  focusColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  onTap: () async {
+                                    _model.pickvideo2 = await actions.pickVideo(
+                                      false,
+                                    );
+                                    _model.compressvideo2 =
+                                        await actions.compressVideo(
+                                      _model.pickvideo2!,
+                                    );
+                                    _model.previewVideo2 = await actions
+                                        .generate2SecondVideoPreview(
+                                      _model.compressvideo2!,
+                                    );
+                                    {
+                                      safeSetState(() => _model
+                                              .isDataUploading_uploadDataNtwVideo3 =
+                                          true);
+                                      var selectedUploadedFiles =
+                                          <FFUploadedFile>[];
+                                      var selectedMedia = <SelectedFile>[];
+                                      var downloadUrls = <String>[];
+                                      try {
+                                        showUploadMessage(
+                                          context,
+                                          'Uploading file...',
+                                          showLoading: true,
+                                        );
+                                        selectedUploadedFiles = _model
+                                                .compressvideo2!
+                                                .bytes!
+                                                .isNotEmpty
+                                            ? [_model.compressvideo2!]
+                                            : <FFUploadedFile>[];
+                                        selectedMedia =
+                                            selectedFilesFromUploadedFiles(
+                                          selectedUploadedFiles,
+                                        );
+                                        downloadUrls = (await Future.wait(
+                                          selectedMedia.map(
+                                            (m) async => await uploadData(
+                                                m.storagePath, m.bytes),
+                                          ),
+                                        ))
+                                            .where((u) => u != null)
+                                            .map((u) => u!)
+                                            .toList();
+                                      } finally {
+                                        ScaffoldMessenger.of(context)
+                                            .hideCurrentSnackBar();
+                                        _model.isDataUploading_uploadDataNtwVideo3 =
+                                            false;
+                                      }
+                                      if (selectedUploadedFiles.length ==
+                                              selectedMedia.length &&
+                                          downloadUrls.length ==
+                                              selectedMedia.length) {
+                                        safeSetState(() {
+                                          _model.uploadedLocalFile_uploadDataNtwVideo3 =
+                                              selectedUploadedFiles.first;
+                                          _model.uploadedFileUrl_uploadDataNtwVideo3 =
+                                              downloadUrls.first;
+                                        });
+                                        showUploadMessage(context, 'Success!');
+                                      } else {
+                                        safeSetState(() {});
+                                        showUploadMessage(
+                                            context, 'Failed to upload data');
+                                        return;
+                                      }
                                     }
-                                    if (selectedUploadedFiles.length ==
-                                            selectedMedia.length &&
-                                        downloadUrls.length ==
-                                            selectedMedia.length) {
-                                      safeSetState(() {
-                                        _model.uploadedLocalFile_uploadDataNtwVideo3 =
-                                            selectedUploadedFiles.first;
-                                        _model.uploadedFileUrl_uploadDataNtwVideo3 =
-                                            downloadUrls.first;
-                                      });
-                                      showUploadMessage(context, 'Success!');
-                                    } else {
-                                      safeSetState(() {});
-                                      showUploadMessage(
-                                          context, 'Failed to upload data');
-                                      return;
-                                    }
-                                  }
 
-                                  FFAppState().video2 = _model
-                                      .uploadedFileUrl_uploadDataNtwVideo3;
-                                  safeSetState(() {});
+                                    FFAppState().video2 = _model
+                                        .uploadedFileUrl_uploadDataNtwVideo3;
+                                    safeSetState(() {});
 
-                                  safeSetState(() {});
-                                },
-                                child: Container(
-                                  width: 100.0,
-                                  height: 100.0,
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                    borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(20.0),
-                                      bottomRight: Radius.circular(20.0),
-                                      topLeft: Radius.circular(20.0),
-                                      topRight: Radius.circular(20.0),
+                                    safeSetState(() {});
+                                  },
+                                  child: Container(
+                                    width: 100.0,
+                                    height: 100.0,
+                                    decoration: BoxDecoration(
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryBackground,
+                                      borderRadius: BorderRadius.only(
+                                        bottomLeft: Radius.circular(20.0),
+                                        bottomRight: Radius.circular(20.0),
+                                        topLeft: Radius.circular(20.0),
+                                        topRight: Radius.circular(20.0),
+                                      ),
+                                      shape: BoxShape.rectangle,
+                                      border: Border.all(
+                                        color: FlutterFlowTheme.of(context)
+                                            .accent4,
+                                        width: 1.0,
+                                      ),
                                     ),
-                                    shape: BoxShape.rectangle,
-                                    border: Border.all(
+                                    child: Icon(
+                                      Icons.add,
                                       color:
-                                          FlutterFlowTheme.of(context).accent4,
-                                      width: 1.0,
+                                          FlutterFlowTheme.of(context).accent1,
+                                      size: 50.0,
                                     ),
-                                  ),
-                                  child: Icon(
-                                    Icons.add,
-                                    color: FlutterFlowTheme.of(context).accent1,
-                                    size: 50.0,
                                   ),
                                 ),
-                              ),
-                            if ((FFAppState().video3 == '') &&
-                                ((FFAppState().video1 != '') &&
-                                    (FFAppState().video2 != '')))
-                              InkWell(
-                                splashColor: Colors.transparent,
-                                focusColor: Colors.transparent,
-                                hoverColor: Colors.transparent,
-                                highlightColor: Colors.transparent,
-                                onTap: () async {
-                                  _model.pickVideo3 = await actions.pickVideo(
-                                    false,
-                                  );
-                                  _model.compressVideo3 =
-                                      await actions.compressVideo(
-                                    _model.pickVideo3!,
-                                  );
-                                  _model.previewVideo3 =
-                                      await actions.generate2SecondVideoPreview(
-                                    _model.compressVideo3!,
-                                  );
-                                  {
-                                    safeSetState(() => _model
-                                            .isDataUploading_uploadDataNtwVideo4 =
-                                        true);
-                                    var selectedUploadedFiles =
-                                        <FFUploadedFile>[];
-                                    var selectedMedia = <SelectedFile>[];
-                                    var downloadUrls = <String>[];
-                                    try {
-                                      showUploadMessage(
-                                        context,
-                                        'Uploading file...',
-                                        showLoading: true,
-                                      );
-                                      selectedUploadedFiles = _model
-                                              .compressVideo3!.bytes!.isNotEmpty
-                                          ? [_model.compressVideo3!]
-                                          : <FFUploadedFile>[];
-                                      selectedMedia =
-                                          selectedFilesFromUploadedFiles(
-                                        selectedUploadedFiles,
-                                      );
-                                      downloadUrls = (await Future.wait(
-                                        selectedMedia.map(
-                                          (m) async => await uploadData(
-                                              m.storagePath, m.bytes),
-                                        ),
-                                      ))
-                                          .where((u) => u != null)
-                                          .map((u) => u!)
-                                          .toList();
-                                    } finally {
-                                      ScaffoldMessenger.of(context)
-                                          .hideCurrentSnackBar();
-                                      _model.isDataUploading_uploadDataNtwVideo4 =
-                                          false;
+                              if ((FFAppState().video3 == '') &&
+                                  ((FFAppState().video1 != '') &&
+                                      (FFAppState().video2 != '')))
+                                InkWell(
+                                  splashColor: Colors.transparent,
+                                  focusColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  onTap: () async {
+                                    _model.pickVideo3 = await actions.pickVideo(
+                                      false,
+                                    );
+                                    _model.compressVideo3 =
+                                        await actions.compressVideo(
+                                      _model.pickVideo3!,
+                                    );
+                                    _model.previewVideo3 = await actions
+                                        .generate2SecondVideoPreview(
+                                      _model.compressVideo3!,
+                                    );
+                                    {
+                                      safeSetState(() => _model
+                                              .isDataUploading_uploadDataNtwVideo4 =
+                                          true);
+                                      var selectedUploadedFiles =
+                                          <FFUploadedFile>[];
+                                      var selectedMedia = <SelectedFile>[];
+                                      var downloadUrls = <String>[];
+                                      try {
+                                        showUploadMessage(
+                                          context,
+                                          'Uploading file...',
+                                          showLoading: true,
+                                        );
+                                        selectedUploadedFiles = _model
+                                                .compressVideo3!
+                                                .bytes!
+                                                .isNotEmpty
+                                            ? [_model.compressVideo3!]
+                                            : <FFUploadedFile>[];
+                                        selectedMedia =
+                                            selectedFilesFromUploadedFiles(
+                                          selectedUploadedFiles,
+                                        );
+                                        downloadUrls = (await Future.wait(
+                                          selectedMedia.map(
+                                            (m) async => await uploadData(
+                                                m.storagePath, m.bytes),
+                                          ),
+                                        ))
+                                            .where((u) => u != null)
+                                            .map((u) => u!)
+                                            .toList();
+                                      } finally {
+                                        ScaffoldMessenger.of(context)
+                                            .hideCurrentSnackBar();
+                                        _model.isDataUploading_uploadDataNtwVideo4 =
+                                            false;
+                                      }
+                                      if (selectedUploadedFiles.length ==
+                                              selectedMedia.length &&
+                                          downloadUrls.length ==
+                                              selectedMedia.length) {
+                                        safeSetState(() {
+                                          _model.uploadedLocalFile_uploadDataNtwVideo4 =
+                                              selectedUploadedFiles.first;
+                                          _model.uploadedFileUrl_uploadDataNtwVideo4 =
+                                              downloadUrls.first;
+                                        });
+                                        showUploadMessage(context, 'Success!');
+                                      } else {
+                                        safeSetState(() {});
+                                        showUploadMessage(
+                                            context, 'Failed to upload data');
+                                        return;
+                                      }
                                     }
-                                    if (selectedUploadedFiles.length ==
-                                            selectedMedia.length &&
-                                        downloadUrls.length ==
-                                            selectedMedia.length) {
-                                      safeSetState(() {
-                                        _model.uploadedLocalFile_uploadDataNtwVideo4 =
-                                            selectedUploadedFiles.first;
-                                        _model.uploadedFileUrl_uploadDataNtwVideo4 =
-                                            downloadUrls.first;
-                                      });
-                                      showUploadMessage(context, 'Success!');
-                                    } else {
-                                      safeSetState(() {});
-                                      showUploadMessage(
-                                          context, 'Failed to upload data');
-                                      return;
-                                    }
-                                  }
 
-                                  FFAppState().video3 = _model
-                                      .uploadedFileUrl_uploadDataNtwVideo4;
-                                  safeSetState(() {});
+                                    FFAppState().video3 = _model
+                                        .uploadedFileUrl_uploadDataNtwVideo4;
+                                    safeSetState(() {});
 
-                                  safeSetState(() {});
-                                },
-                                child: Container(
-                                  width: 100.0,
-                                  height: 100.0,
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                    borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(20.0),
-                                      bottomRight: Radius.circular(20.0),
-                                      topLeft: Radius.circular(20.0),
-                                      topRight: Radius.circular(20.0),
+                                    safeSetState(() {});
+                                  },
+                                  child: Container(
+                                    width: 100.0,
+                                    height: 100.0,
+                                    decoration: BoxDecoration(
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryBackground,
+                                      borderRadius: BorderRadius.only(
+                                        bottomLeft: Radius.circular(20.0),
+                                        bottomRight: Radius.circular(20.0),
+                                        topLeft: Radius.circular(20.0),
+                                        topRight: Radius.circular(20.0),
+                                      ),
+                                      shape: BoxShape.rectangle,
+                                      border: Border.all(
+                                        color: FlutterFlowTheme.of(context)
+                                            .accent4,
+                                        width: 1.0,
+                                      ),
                                     ),
-                                    shape: BoxShape.rectangle,
-                                    border: Border.all(
+                                    child: Icon(
+                                      Icons.add,
                                       color:
-                                          FlutterFlowTheme.of(context).accent4,
-                                      width: 1.0,
+                                          FlutterFlowTheme.of(context).accent1,
+                                      size: 50.0,
                                     ),
-                                  ),
-                                  child: Icon(
-                                    Icons.add,
-                                    color: FlutterFlowTheme.of(context).accent1,
-                                    size: 50.0,
                                   ),
                                 ),
-                              ),
-                          ],
-                        ),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
+                            ],
+                          ),
+                          Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               if (_model.uploadedFileUrl_uploadDataNtwVideo2 !=
@@ -720,17 +729,21 @@ class _CreateDogProfileNewWidgetState extends State<CreateDogProfileNewWidget> {
                                             size: 40.0,
                                           ),
                                         ),
-                                        FlutterFlowVideoPlayer(
-                                          path: _model
-                                              .uploadedFileUrl_uploadDataNtwVideo2,
-                                          videoType: VideoType.network,
-                                          width: 100.0,
-                                          height: 100.0,
-                                          autoPlay: false,
-                                          looping: false,
-                                          showControls: false,
-                                          allowFullScreen: false,
-                                          allowPlaybackSpeedMenu: false,
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(0.0, 0.0),
+                                          child: FlutterFlowVideoPlayer(
+                                            path: _model
+                                                .uploadedFileUrl_uploadDataNtwVideo2,
+                                            videoType: VideoType.network,
+                                            width: 100.0,
+                                            height: 100.0,
+                                            autoPlay: false,
+                                            looping: false,
+                                            showControls: false,
+                                            allowFullScreen: false,
+                                            allowPlaybackSpeedMenu: false,
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -842,8 +855,8 @@ class _CreateDogProfileNewWidgetState extends State<CreateDogProfileNewWidget> {
                                 ),
                             ],
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     Row(
                       mainAxisSize: MainAxisSize.max,

@@ -1,9 +1,9 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/backend/push_notifications/push_notifications_util.dart';
 import '/flutter_flow/flutter_flow_ad_banner.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
-import '/flutter_flow/flutter_flow_toggle_icon.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_video_player.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -11,7 +11,9 @@ import '/pages/components/delete_post/delete_post_widget.dart';
 import '/pages/components/post_options_post/post_options_post_widget.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 import '/index.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'post_details_model.dart';
 export 'post_details_model.dart';
@@ -109,8 +111,11 @@ class _PostDetailsWidgetState extends State<PostDetailsWidget> {
                                     topLeft: Radius.circular(0.0),
                                     topRight: Radius.circular(0.0),
                                   ),
-                                  child: Image.network(
-                                    valueOrDefault<String>(
+                                  child: CachedNetworkImage(
+                                    fadeInDuration: Duration(milliseconds: 500),
+                                    fadeOutDuration:
+                                        Duration(milliseconds: 500),
+                                    imageUrl: valueOrDefault<String>(
                                       postDetailsUserPostsRecord.postPhoto,
                                       'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/sample-app-social-app-tx2kqp/assets/ot903vcfouv7/oscar-sutton-yihlaRCCvd4-unsplash.jpg',
                                     ),
@@ -1081,41 +1086,174 @@ class _PostDetailsWidgetState extends State<PostDetailsWidget> {
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       children: [
-                                        ToggleIcon(
-                                          onPressed: () async {
-                                            final likesElement =
-                                                currentUserReference;
-                                            final likesUpdate =
-                                                postDetailsUserPostsRecord.likes
-                                                        .contains(likesElement)
-                                                    ? FieldValue.arrayRemove(
-                                                        [likesElement])
-                                                    : FieldValue.arrayUnion(
-                                                        [likesElement]);
-                                            await postDetailsUserPostsRecord
-                                                .reference
-                                                .update({
-                                              ...mapToFirestore(
-                                                {
-                                                  'likes': likesUpdate,
-                                                },
-                                              ),
-                                            });
-                                          },
-                                          value: postDetailsUserPostsRecord
-                                              .likes
-                                              .contains(currentUserReference),
-                                          onIcon: Icon(
-                                            Icons.pets_rounded,
-                                            color: FlutterFlowTheme.of(context)
-                                                .secondary,
-                                            size: 25.0,
-                                          ),
-                                          offIcon: Icon(
-                                            Icons.pets_outlined,
-                                            color: FlutterFlowTheme.of(context)
-                                                .secondaryText,
-                                            size: 25.0,
+                                        Container(
+                                          width: 41.0,
+                                          height: 41.0,
+                                          child: Stack(
+                                            children: [
+                                              if (!postDetailsUserPostsRecord
+                                                  .likes
+                                                  .contains(
+                                                      currentUserReference))
+                                                Align(
+                                                  alignment:
+                                                      AlignmentDirectional(
+                                                          0.0, 0.25),
+                                                  child: InkWell(
+                                                    splashColor:
+                                                        Colors.transparent,
+                                                    focusColor:
+                                                        Colors.transparent,
+                                                    hoverColor:
+                                                        Colors.transparent,
+                                                    highlightColor:
+                                                        Colors.transparent,
+                                                    onTap: () async {
+                                                      var notificationsRecordReference =
+                                                          NotificationsRecord
+                                                              .collection
+                                                              .doc();
+                                                      await notificationsRecordReference
+                                                          .set(
+                                                              createNotificationsRecordData(
+                                                        userID:
+                                                            currentUserReference,
+                                                        postID:
+                                                            postDetailsUserPostsRecord
+                                                                .reference,
+                                                        time:
+                                                            getCurrentTimestamp,
+                                                        notificationType:
+                                                            'Like',
+                                                      ));
+                                                      _model.postNot1 = NotificationsRecord
+                                                          .getDocumentFromData(
+                                                              createNotificationsRecordData(
+                                                                userID:
+                                                                    currentUserReference,
+                                                                postID:
+                                                                    postDetailsUserPostsRecord
+                                                                        .reference,
+                                                                time:
+                                                                    getCurrentTimestamp,
+                                                                notificationType:
+                                                                    'Like',
+                                                              ),
+                                                              notificationsRecordReference);
+
+                                                      await postDetailsUserPostsRecord
+                                                          .reference
+                                                          .update({
+                                                        ...mapToFirestore(
+                                                          {
+                                                            'likes': FieldValue
+                                                                .arrayUnion([
+                                                              currentUserReference
+                                                            ]),
+                                                          },
+                                                        ),
+                                                      });
+
+                                                      await widget
+                                                          .userRecord!.reference
+                                                          .update({
+                                                        ...createUsersRecordData(
+                                                          hasUnreadMessages:
+                                                              true,
+                                                        ),
+                                                        ...mapToFirestore(
+                                                          {
+                                                            'unreadNotifications':
+                                                                FieldValue
+                                                                    .arrayUnion([
+                                                              _model.postNot1
+                                                                  ?.reference
+                                                            ]),
+                                                          },
+                                                        ),
+                                                      });
+                                                      triggerPushNotification(
+                                                        notificationTitle:
+                                                            'TrustDog',
+                                                        notificationText:
+                                                            '${widget.userRecord?.displayName} liked your listing',
+                                                        notificationImageUrl:
+                                                            postDetailsUserPostsRecord
+                                                                .postPhoto,
+                                                        userRefs: [
+                                                          widget.userRecord!
+                                                              .reference
+                                                        ],
+                                                        initialPageName:
+                                                            'postDetails',
+                                                        parameterData: {
+                                                          'postReference':
+                                                              postDetailsUserPostsRecord
+                                                                  .reference,
+                                                          'userRecord': widget
+                                                              .userRecord,
+                                                        },
+                                                      );
+
+                                                      safeSetState(() {});
+                                                    },
+                                                    child: FaIcon(
+                                                      FontAwesomeIcons.paw,
+                                                      color: Color(0xFF95A1AC),
+                                                      size: 25.0,
+                                                    ),
+                                                  ),
+                                                ),
+                                              if (postDetailsUserPostsRecord
+                                                  .likes
+                                                  .contains(
+                                                      currentUserReference))
+                                                Align(
+                                                  alignment:
+                                                      AlignmentDirectional(
+                                                          0.0, 0.25),
+                                                  child: InkWell(
+                                                    splashColor:
+                                                        Colors.transparent,
+                                                    focusColor:
+                                                        Colors.transparent,
+                                                    hoverColor:
+                                                        Colors.transparent,
+                                                    highlightColor:
+                                                        Colors.transparent,
+                                                    onTap: () async {
+                                                      await postDetailsUserPostsRecord
+                                                          .reference
+                                                          .update({
+                                                        ...mapToFirestore(
+                                                          {
+                                                            'likes': FieldValue
+                                                                .arrayRemove([
+                                                              currentUserReference
+                                                            ]),
+                                                          },
+                                                        ),
+                                                      });
+                                                    },
+                                                    child: FaIcon(
+                                                      FontAwesomeIcons.paw,
+                                                      color: (postDetailsUserPostsRecord
+                                                                      .boostedUntil !=
+                                                                  null) &&
+                                                              (postDetailsUserPostsRecord
+                                                                      .boostedUntil! >
+                                                                  getCurrentTimestamp)
+                                                          ? FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primary
+                                                          : FlutterFlowTheme.of(
+                                                                  context)
+                                                              .secondary,
+                                                      size: 25.0,
+                                                    ),
+                                                  ),
+                                                ),
+                                            ],
                                           ),
                                         ),
                                         Padding(
@@ -1207,14 +1345,7 @@ class _PostDetailsWidgetState extends State<PostDetailsWidget> {
                               ),
                               Row(
                                 mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Icon(
-                                    Icons.ios_share,
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryText,
-                                    size: 24.0,
-                                  ),
-                                ],
+                                children: [],
                               ),
                             ],
                           ),
@@ -1712,25 +1843,118 @@ class _PostDetailsWidgetState extends State<PostDetailsWidget> {
                                     0.0, 0.0, 4.0, 0.0),
                                 child: FFButtonWidget(
                                   onPressed: () async {
-                                    await PostCommentsRecord.collection
-                                        .doc()
-                                        .set(createPostCommentsRecordData(
-                                          timePosted: getCurrentTimestamp,
-                                          comment: _model.textController.text,
-                                          user: currentUserReference,
-                                          post: postDetailsUserPostsRecord
-                                              .reference,
-                                        ));
+                                    if (_model.textController.text != '') {
+                                      var postCommentsRecordReference =
+                                          PostCommentsRecord.collection.doc();
+                                      await postCommentsRecordReference
+                                          .set(createPostCommentsRecordData(
+                                        timePosted: getCurrentTimestamp,
+                                        comment: _model.textController.text,
+                                        user: currentUserReference,
+                                        post: postDetailsUserPostsRecord
+                                            .reference,
+                                      ));
+                                      _model.postNot = PostCommentsRecord
+                                          .getDocumentFromData(
+                                              createPostCommentsRecordData(
+                                                timePosted: getCurrentTimestamp,
+                                                comment:
+                                                    _model.textController.text,
+                                                user: currentUserReference,
+                                                post: postDetailsUserPostsRecord
+                                                    .reference,
+                                              ),
+                                              postCommentsRecordReference);
 
-                                    await postDetailsUserPostsRecord.reference
-                                        .update({
-                                      ...mapToFirestore(
-                                        {
-                                          'numComments':
-                                              FieldValue.increment(1),
+                                      await postDetailsUserPostsRecord.reference
+                                          .update({
+                                        ...mapToFirestore(
+                                          {
+                                            'numComments':
+                                                FieldValue.increment(1),
+                                          },
+                                        ),
+                                      });
+
+                                      var notificationsRecordReference =
+                                          NotificationsRecord.collection.doc();
+                                      await notificationsRecordReference
+                                          .set(createNotificationsRecordData(
+                                        userID: currentUserReference,
+                                        postID: postDetailsUserPostsRecord
+                                            .reference,
+                                        time: getCurrentTimestamp,
+                                        notificationType: 'Comment',
+                                      ));
+                                      _model.postNot2 = NotificationsRecord
+                                          .getDocumentFromData(
+                                              createNotificationsRecordData(
+                                                userID: currentUserReference,
+                                                postID:
+                                                    postDetailsUserPostsRecord
+                                                        .reference,
+                                                time: getCurrentTimestamp,
+                                                notificationType: 'Comment',
+                                              ),
+                                              notificationsRecordReference);
+
+                                      await widget.userRecord!.reference
+                                          .update({
+                                        ...createUsersRecordData(
+                                          hasUnreadMessages: true,
+                                        ),
+                                        ...mapToFirestore(
+                                          {
+                                            'unreadNotifications':
+                                                FieldValue.arrayUnion([
+                                              _model.postNot2?.reference
+                                            ]),
+                                          },
+                                        ),
+                                      });
+                                      safeSetState(() {
+                                        _model.textController?.clear();
+                                      });
+                                      triggerPushNotification(
+                                        notificationTitle: 'TrustDog',
+                                        notificationText:
+                                            '${widget.userRecord?.displayName}comment your listing',
+                                        notificationImageUrl:
+                                            postDetailsUserPostsRecord
+                                                .postPhoto,
+                                        userRefs: [
+                                          widget.userRecord!.reference
+                                        ],
+                                        initialPageName: 'postDetails',
+                                        parameterData: {
+                                          'postReference':
+                                              postDetailsUserPostsRecord
+                                                  .reference,
+                                          'userRecord': widget.userRecord,
                                         },
-                                      ),
-                                    });
+                                      );
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'Comment cannot be blank',
+                                            style: TextStyle(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                            ),
+                                          ),
+                                          duration:
+                                              Duration(milliseconds: 4000),
+                                          backgroundColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondary,
+                                        ),
+                                      );
+                                    }
+
+                                    safeSetState(() {});
                                   },
                                   text: 'Post',
                                   options: FFButtonOptions(

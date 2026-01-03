@@ -39,18 +39,6 @@ class _AllChatsPageWidgetState extends State<AllChatsPageWidget> {
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          context.pushNamed(AddChatUsersWidget.routeName);
-        },
-        backgroundColor: FlutterFlowTheme.of(context).primary,
-        elevation: 8.0,
-        child: Icon(
-          Icons.add_rounded,
-          color: Colors.white,
-          size: 36.0,
-        ),
-      ),
       appBar: AppBar(
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
         automaticallyImplyLeading: false,

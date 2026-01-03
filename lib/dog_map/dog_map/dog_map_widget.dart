@@ -71,10 +71,6 @@ class _DogMapWidgetState extends State<DogMapWidget> {
 
     return StreamBuilder<List<UserPostsRecord>>(
       stream: queryUserPostsRecord(
-        queryBuilder: (userPostsRecord) => userPostsRecord.where(
-          'location',
-          isGreaterThanOrEqualTo: currentUserLocationValue?.toGeoPoint(),
-        ),
         limit: 100,
       ),
       builder: (context, snapshot) {

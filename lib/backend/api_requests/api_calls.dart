@@ -43,7 +43,7 @@ class QueryAlgoliaCall {
     );
   }
 
-  static List<String>? objectId(dynamic response) => (getJsonField(
+  static List<String>? objectID(dynamic response) => (getJsonField(
         response,
         r'''$[:].objectID''',
         true,

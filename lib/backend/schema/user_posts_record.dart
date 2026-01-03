@@ -143,6 +143,31 @@ class UserPostsRecord extends FirestoreRecord {
   String get videoThumbnail => _videoThumbnail ?? '';
   bool hasVideoThumbnail() => _videoThumbnail != null;
 
+  // "boostedUntil" field.
+  DateTime? _boostedUntil;
+  DateTime? get boostedUntil => _boostedUntil;
+  bool hasBoostedUntil() => _boostedUntil != null;
+
+  // "pending" field.
+  bool? _pending;
+  bool get pending => _pending ?? false;
+  bool hasPending() => _pending != null;
+
+  // "verified" field.
+  bool? _verified;
+  bool get verified => _verified ?? false;
+  bool hasVerified() => _verified != null;
+
+  // "rejected" field.
+  bool? _rejected;
+  bool get rejected => _rejected ?? false;
+  bool hasRejected() => _rejected != null;
+
+  // "rejectionReason" field.
+  String? _rejectionReason;
+  String get rejectionReason => _rejectionReason ?? '';
+  bool hasRejectionReason() => _rejectionReason != null;
+
   void _initializeFields() {
     _postPhoto = snapshotData['postPhoto'] as String?;
     _postTitle = snapshotData['postTitle'] as String?;
@@ -169,6 +194,11 @@ class UserPostsRecord extends FirestoreRecord {
     _age = castToType<int>(snapshotData['age']);
     _price = castToType<int>(snapshotData['price']);
     _videoThumbnail = snapshotData['videoThumbnail'] as String?;
+    _boostedUntil = snapshotData['boostedUntil'] as DateTime?;
+    _pending = snapshotData['pending'] as bool?;
+    _verified = snapshotData['verified'] as bool?;
+    _rejected = snapshotData['rejected'] as bool?;
+    _rejectionReason = snapshotData['rejectionReason'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -276,6 +306,15 @@ class UserPostsRecord extends FirestoreRecord {
             false,
           ),
           'videoThumbnail': snapshot.data['videoThumbnail'],
+          'boostedUntil': convertAlgoliaParam(
+            snapshot.data['boostedUntil'],
+            ParamType.DateTime,
+            false,
+          ),
+          'pending': snapshot.data['pending'],
+          'verified': snapshot.data['verified'],
+          'rejected': snapshot.data['rejected'],
+          'rejectionReason': snapshot.data['rejectionReason'],
         },
         UserPostsRecord.collection.doc(snapshot.objectID),
       );
@@ -335,6 +374,11 @@ Map<String, dynamic> createUserPostsRecordData({
   int? age,
   int? price,
   String? videoThumbnail,
+  DateTime? boostedUntil,
+  bool? pending,
+  bool? verified,
+  bool? rejected,
+  String? rejectionReason,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -361,6 +405,11 @@ Map<String, dynamic> createUserPostsRecordData({
       'age': age,
       'price': price,
       'videoThumbnail': videoThumbnail,
+      'boostedUntil': boostedUntil,
+      'pending': pending,
+      'verified': verified,
+      'rejected': rejected,
+      'rejectionReason': rejectionReason,
     }.withoutNulls,
   );
 
@@ -397,7 +446,12 @@ class UserPostsRecordDocumentEquality implements Equality<UserPostsRecord> {
         e1?.priceMax == e2?.priceMax &&
         e1?.age == e2?.age &&
         e1?.price == e2?.price &&
-        e1?.videoThumbnail == e2?.videoThumbnail;
+        e1?.videoThumbnail == e2?.videoThumbnail &&
+        e1?.boostedUntil == e2?.boostedUntil &&
+        e1?.pending == e2?.pending &&
+        e1?.verified == e2?.verified &&
+        e1?.rejected == e2?.rejected &&
+        e1?.rejectionReason == e2?.rejectionReason;
   }
 
   @override
@@ -426,7 +480,12 @@ class UserPostsRecordDocumentEquality implements Equality<UserPostsRecord> {
         e?.priceMax,
         e?.age,
         e?.price,
-        e?.videoThumbnail
+        e?.videoThumbnail,
+        e?.boostedUntil,
+        e?.pending,
+        e?.verified,
+        e?.rejected,
+        e?.rejectionReason
       ]);
 
   @override

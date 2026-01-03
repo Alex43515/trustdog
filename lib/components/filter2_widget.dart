@@ -76,7 +76,7 @@ class _Filter2WidgetState extends State<Filter2Widget>
         children: [
           Container(
             width: MediaQuery.sizeOf(context).width * 1.0,
-            height: MediaQuery.sizeOf(context).height * 1.2,
+            height: 1500.0,
             decoration: BoxDecoration(
               color: FlutterFlowTheme.of(context).secondaryBackground,
             ),
@@ -176,7 +176,8 @@ class _Filter2WidgetState extends State<Filter2Widget>
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
                                       FlutterFlowRadioButton(
-                                        options: ['Male', 'Female'].toList(),
+                                        options:
+                                            ['Male', 'Female', 'Both'].toList(),
                                         onChanged: (val) => safeSetState(() {}),
                                         controller: _model
                                                 .radioButtonValueController ??=
@@ -244,6 +245,90 @@ class _Filter2WidgetState extends State<Filter2Widget>
                                             WrapAlignment.start,
                                         verticalAlignment:
                                             WrapCrossAlignment.start,
+                                      ),
+                                    ].divide(SizedBox(width: 16.0)),
+                                  ),
+                                ].divide(SizedBox(height: 12.0)),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: FlutterFlowTheme.of(context)
+                                  .primaryBackground,
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  16.0, 16.0, 16.0, 16.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Sponsored',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyLarge
+                                        .override(
+                                          font: GoogleFonts.outfit(
+                                            fontWeight: FontWeight.w600,
+                                            fontStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyLarge
+                                                    .fontStyle,
+                                          ),
+                                          letterSpacing: 0.0,
+                                          fontWeight: FontWeight.w600,
+                                          fontStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyLarge
+                                                  .fontStyle,
+                                        ),
+                                  ),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Theme(
+                                        data: ThemeData(
+                                          checkboxTheme: CheckboxThemeData(
+                                            visualDensity:
+                                                VisualDensity.compact,
+                                            materialTapTargetSize:
+                                                MaterialTapTargetSize
+                                                    .shrinkWrap,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                            ),
+                                          ),
+                                          unselectedWidgetColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .alternate,
+                                        ),
+                                        child: Checkbox(
+                                          value: _model.checkboxValue ??= true,
+                                          onChanged: (newValue) async {
+                                            safeSetState(() => _model
+                                                .checkboxValue = newValue!);
+                                          },
+                                          side: (FlutterFlowTheme.of(context)
+                                                      .alternate !=
+                                                  null)
+                                              ? BorderSide(
+                                                  width: 2,
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .alternate,
+                                                )
+                                              : null,
+                                          activeColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .primary,
+                                          checkColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .tertiary,
+                                        ),
                                       ),
                                     ].divide(SizedBox(width: 16.0)),
                                   ),
@@ -877,6 +962,7 @@ class _Filter2WidgetState extends State<Filter2Widget>
                                     FFAppState().priceMin = 0.0;
                                     FFAppState().priceMax = 5000.0;
                                     FFAppState().age = 0;
+                                    FFAppState().sponsored = true;
                                     safeSetState(() {});
 
                                     context.pushNamed(
@@ -939,6 +1025,8 @@ class _Filter2WidgetState extends State<Filter2Widget>
                                         _model.textController.text;
                                     FFAppState().filterSex =
                                         _model.radioButtonValue!;
+                                    FFAppState().sponsored =
+                                        !(FFAppState().sponsored ?? true);
                                     safeSetState(() {});
 
                                     context.pushNamed(

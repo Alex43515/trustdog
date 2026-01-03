@@ -86,6 +86,22 @@ class UsersRecord extends FirestoreRecord {
   int get dogsCreated => _dogsCreated ?? 0;
   bool hasDogsCreated() => _dogsCreated != null;
 
+  // "verifikovani" field.
+  bool? _verifikovani;
+  bool get verifikovani => _verifikovani ?? false;
+  bool hasVerifikovani() => _verifikovani != null;
+
+  // "hasUnreadMessages" field.
+  bool? _hasUnreadMessages;
+  bool get hasUnreadMessages => _hasUnreadMessages ?? false;
+  bool hasHasUnreadMessages() => _hasUnreadMessages != null;
+
+  // "unreadNotifications" field.
+  List<DocumentReference>? _unreadNotifications;
+  List<DocumentReference> get unreadNotifications =>
+      _unreadNotifications ?? const [];
+  bool hasUnreadNotifications() => _unreadNotifications != null;
+
   void _initializeFields() {
     _displayName = snapshotData['display_name'] as String?;
     _email = snapshotData['email'] as String?;
@@ -101,6 +117,9 @@ class UsersRecord extends FirestoreRecord {
     _rating = getDataList(snapshotData['rating']);
     _uidRatings = getDataList(snapshotData['uidRatings']);
     _dogsCreated = castToType<int>(snapshotData['dogsCreated']);
+    _verifikovani = snapshotData['verifikovani'] as bool?;
+    _hasUnreadMessages = snapshotData['hasUnreadMessages'] as bool?;
+    _unreadNotifications = getDataList(snapshotData['unreadNotifications']);
   }
 
   static CollectionReference get collection =>
@@ -149,6 +168,8 @@ Map<String, dynamic> createUsersRecordData({
   bool? isVerifiedUser,
   String? locationName,
   int? dogsCreated,
+  bool? verifikovani,
+  bool? hasUnreadMessages,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -164,6 +185,8 @@ Map<String, dynamic> createUsersRecordData({
       'isVerifiedUser': isVerifiedUser,
       'locationName': locationName,
       'dogsCreated': dogsCreated,
+      'verifikovani': verifikovani,
+      'hasUnreadMessages': hasUnreadMessages,
     }.withoutNulls,
   );
 
@@ -189,7 +212,10 @@ class UsersRecordDocumentEquality implements Equality<UsersRecord> {
         e1?.locationName == e2?.locationName &&
         listEquality.equals(e1?.rating, e2?.rating) &&
         listEquality.equals(e1?.uidRatings, e2?.uidRatings) &&
-        e1?.dogsCreated == e2?.dogsCreated;
+        e1?.dogsCreated == e2?.dogsCreated &&
+        e1?.verifikovani == e2?.verifikovani &&
+        e1?.hasUnreadMessages == e2?.hasUnreadMessages &&
+        listEquality.equals(e1?.unreadNotifications, e2?.unreadNotifications);
   }
 
   @override
@@ -207,7 +233,10 @@ class UsersRecordDocumentEquality implements Equality<UsersRecord> {
         e?.locationName,
         e?.rating,
         e?.uidRatings,
-        e?.dogsCreated
+        e?.dogsCreated,
+        e?.verifikovani,
+        e?.hasUnreadMessages,
+        e?.unreadNotifications
       ]);
 
   @override

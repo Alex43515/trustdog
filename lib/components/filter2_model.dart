@@ -8,6 +8,8 @@ class Filter2Model extends FlutterFlowModel<Filter2Widget> {
 
   // State field(s) for RadioButton widget.
   FormFieldController<String>? radioButtonValueController;
+  // State field(s) for Checkbox widget.
+  bool? checkboxValue;
   // State field(s) for DropDown widget.
   String? dropDownValue;
   FormFieldController<String>? dropDownValueController;

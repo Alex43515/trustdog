@@ -239,4 +239,10 @@ class FFAppState extends ChangeNotifier {
   set geoLoc(LatLng? value) {
     _geoLoc = value;
   }
+
+  bool _sponsored = true;
+  bool get sponsored => _sponsored;
+  set sponsored(bool value) {
+    _sponsored = value;
+  }
 }
